@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bde27281-c01c-41cc-9827-dd63178db3fe"
+      }
+    },
+    "owner": "cdseaholm"
   }
 }

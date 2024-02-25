@@ -28,8 +28,31 @@ yarn-error.*
 .DS_Store
 *.pem
 
+# Windows
+Thumbs.db
+desktop.ini
+
 # local env files
+.env
 .env*.local
 
 # typescript
 *.tsbuildinfo
+
+# Log files
+*.log
+
+# IDE settings
+.vscode/
+.idea/
+
+#misc
+__tests__/
+notes/
+package.json
+package-lock.json
+
+
+
+
+
