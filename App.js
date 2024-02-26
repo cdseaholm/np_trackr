@@ -4,13 +4,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomProfileModalSheet } from './src/components/functionality/BottomProfileModalSheet';
 import Homepage from './src/screens/Homepage/Homepage';
 import MainAppbar from './src/components/functionality/Main-appbar';
-import { AddToRankingList } from './src/components/functionality/rankings/AddToRankingList';
-import { CreateNewRankingList } from './src/components/functionality/rankings/CreateNewRankingList';
-import { CreateNewTrackingList } from './src/components/functionality/trackings/CreateNewTrackingList';
-import { AddToTrackingList } from './src/components/functionality/trackings/AddToTrackingList';
-import { AddToCustomList } from './src/components/functionality/customLists/AddToCustomList';
-import { CreateNewCustomList } from './src/components/functionality/customLists/CreateNewCustomList';
-import { CreateNewList } from './src/components/functionality/basicHandles/CreateNewList';
+import { AddToRankingList } from './src/components/functionality/modalSheets/rankings/AddToRankingList';
+import { CreateNewRankingList } from './src/components/functionality/modalSheets/rankings/CreateNewRankingList';
+import { CreateNewTrackingList } from './src/components/functionality/modalSheets/trackings/CreateNewTrackingList';
+import { AddToTrackingList } from './src/components/functionality/modalSheets/trackings/AddToTrackingList';
+import { AddToCustomList } from './src/components/functionality/modalSheets/customLists/AddToCustomList';
+import { CreateNewCustomList } from './src/components/functionality/modalSheets/customLists/CreateNewCustomList';
+import { CreateNewList } from './src/components/functionality/modalSheets/CreateNewList';
 
 
 const RootStack = createNativeStackNavigator();
@@ -53,7 +53,7 @@ const RootStackScreen = () => {
           <RootStack.Screen 
             name="CreateNewTrackingList" 
             component={CreateNewTrackingList} 
-            options={{ contentStyle: {position: 'absolute', top: '50%', right: 0, left: 0, bottom: 0, backgroundColor: 'transparent'}}}
+            options={{ contentStyle: {position: 'relative', top: '50%', right: 0, left: 0, bottom: 0, backgroundColor: 'transparent'}}}
           />
           <RootStack.Screen 
             name="AddToCustomList" 
@@ -68,7 +68,7 @@ const RootStackScreen = () => {
           <RootStack.Screen 
             name="CreateNewList" 
             component={CreateNewList} 
-            options={{ contentStyle: {position: 'absolute', top: '50%', right: 0, left: 0, bottom: 0, backgroundColor: 'transparent'}}}
+            options={{ contentStyle: {backgroundColor: 'transparent'}}}
           />
       </RootStack.Group>
     </RootStack.Navigator>

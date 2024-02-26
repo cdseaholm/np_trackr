@@ -21,7 +21,9 @@
     "express": "^4.18.2",
     "react": "18.2.0",
     "react-native": "0.73.4",
+    "react-native-keyboard-aware-scrollview": "^2.1.0",
     "react-native-paper": "^5.12.3",
+    "react-native-picker-select": "^9.0.1",
     "sequelize": "^6.37.1",
     "uuid": "^9.0.1"
   },
