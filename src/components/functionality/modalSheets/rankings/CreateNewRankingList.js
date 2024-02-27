@@ -12,8 +12,8 @@ export function CreateNewRankingList() {
     {text: 'Create', onPress: () => HandleClosePress(navigation)}
   ];
   const modalTextInputItems = [
-    {placeholder: 'Name', onChangeText: setRankingListName, value: rankingListName},
-    {placeHolder: 'Notes', onChangeText: setRankingListNotes, value: rankingListNotes}
+    {placeholder: 'Name', onChangeText: setRankingListName, value: rankingListName, keyboardType: 'default'},
+    {placeholder: 'Notes', onChangeText: setRankingListNotes, value: rankingListNotes, keyboardType: 'default'}
   ];
 
   return (

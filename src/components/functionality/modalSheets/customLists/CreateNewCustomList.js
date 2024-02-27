@@ -12,8 +12,8 @@ export function CreateNewCustomList() {
     {text: 'Create', onPress: () => HandleClosePress(navigation)}
   ];
   const modalTextInputItems = [
-    {placeholder: 'Name', onChangeText: setCustomListName, value: customListName},
-    {placeHolder: 'Notes', onChangeText: setCustomListNotes, value: customListNotes}
+    {placeholder: 'Name', onChangeText: setCustomListName, value: customListName, keyboardType: 'default'},
+    {placeholder: 'Notes', onChangeText: setCustomListNotes, value: customListNotes, keyboardType: 'default'}
   ];
 
   return (

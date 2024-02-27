@@ -13,14 +13,14 @@ export function AddToTrackingList() {
     {text: 'Create', onPress: () => HandleClosePress(navigation)}
   ];
   const modalTextInputItems = [
-    {placeholder: 'Name', onChangeText: setTrackingItemName, value: trackingItemName},
-    {placeHolder: 'Notes', onChangeText: setTrackingItemNotes, value: trackingItemNotes}
+    {placeholder: 'Name', onChangeText: setTrackingItemName, value: trackingItemName, keyboardType: 'default'},
+    {placeholder: 'Notes', onChangeText: setTrackingItemNotes, value: trackingItemNotes, keyboardType: 'default'}
   ];
 
   return (
       <ModalSheetTemplate 
         modalTopStartValue={0}
-        modalTitle='Log new Trackr Item'
+        modalTitle='Log new Tracker Item'
         dropDownItems={rankingList} 
         modalTextInputItems={modalTextInputItems} 
         modalButtonItems={modalButtonItems}

@@ -12,7 +12,7 @@ export function CreateNewList() {
     {text: 'Create', onPress: () => HandleClosePress(navigation)}
   ];
   const modalTextInputItems = [
-    {placeholder: 'Name', onChangeText: setlistName, value: listName}
+    {placeholder: 'Name', onChangeText: setlistName, value: listName, keyboardType: 'default'}
   ];
 
   return (
