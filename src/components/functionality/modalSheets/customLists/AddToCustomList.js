@@ -14,15 +14,15 @@ export function AddToCustomList() {
     {text: 'Create', onPress: () => HandleClosePress(navigation)}
   ];
   const modalTextInputItems = [
-    {placeholder: 'Name', onChangeText: setCustomItemName, value: customItemName},
-    {placeHolder: 'Notes', onChangeText: setCustomItemNotes, value: customItemNotes},
-    {placeHolder: 'Rank', onChangeText: setRankValue, value: rankValue}
+    {placeholder: 'Name', onChangeText: setCustomItemName, value: customItemName, keyboardType: 'default'},
+    {placeholder: 'Notes', onChangeText: setCustomItemNotes, value: customItemNotes, keyboardType: 'default'},
+    {placeholder: 'Rank', onChangeText: setRankValue, value: rankValue, keyboardType: 'number-pad'}
   ];
 
   return (
       <ModalSheetTemplate 
         modalTopStartValue={0}
-        modalTitle='Create New Custom List'
+        modalTitle='Add to Custom List'
         dropDownItems={customList} 
         modalTextInputItems={modalTextInputItems} 
         modalButtonItems={modalButtonItems}

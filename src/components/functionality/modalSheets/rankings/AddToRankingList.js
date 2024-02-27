@@ -8,21 +8,21 @@ export function AddToRankingList() {
   const [rankingItemName, setRankingItemName] = useState('');
   const [rankingItemNotes, setRankingItemNotes] = useState('');
   const [rankValue, setRankValue] = useState('');
-  const rankingList = ['Rankr'];
+  const rankingList = ['Rankr', 'TV Rankings', 'Movie Rankings', 'Dinner Rankings'];
   const modalButtonItems = [
     {text: 'Cancel', onPress: () => HandleClosePress(navigation)},
     {text: 'Create', onPress: () => HandleClosePress(navigation)}
   ];
   const modalTextInputItems = [
-    {placeholder: 'Name', onChangeText: setRankingItemName, value: rankingItemName},
-    {placeHolder: 'Notes', onChangeText: setRankingItemNotes, value: rankingItemNotes},
-    {placeHolder: 'Rank', onChangeText: setRankValue, value: rankValue}
+    {placeholder: 'Name', onChangeText: setRankingItemName, value: rankingItemName, keyboardType: 'default'},
+    {placeholder: 'Notes', onChangeText: setRankingItemNotes, value: rankingItemNotes, keyboardType: 'default'},
+    {placeholder: 'Rank', onChangeText: setRankValue, value: rankValue, keyboardType: 'number-pad'}
   ];
 
   return (
       <ModalSheetTemplate 
         modalTopStartValue={0}
-        modalTitle='Create New Ranking List'
+        modalTitle='Add Item to Ranking List'
         dropDownItems={rankingList} 
         modalTextInputItems={modalTextInputItems} 
         modalButtonItems={modalButtonItems}

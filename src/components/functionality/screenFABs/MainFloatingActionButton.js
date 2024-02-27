@@ -1,10 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
 import { FAB } from 'react-native-paper';
-import { HomeFABs } from './screenFABs/HomeFAB';
-import { CalendarFABs } from './screenFABs/CalendarFAB';
-import { GoalFABs } from './screenFABs/GoalFAB';
-import { StatFABs } from './screenFABs/StatFAB';
+import { HomeFABs, CalendarFABs, StatFABs, GoalFABs } from "./FABs";
 import { useNavigation } from '@react-navigation/native';
 
 export function withFAB(WrappedComponent) {

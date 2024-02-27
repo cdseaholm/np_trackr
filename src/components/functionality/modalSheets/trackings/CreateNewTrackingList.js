@@ -12,7 +12,7 @@ export function CreateNewTrackingList() {
     {text: 'Create', onPress: () => HandleClosePress(navigation)}
   ];
   const modalTextInputItems = [
-    {placeholder: 'Name', onChangeText: setTrackingListName, value: trackingListName}
+    {placeholder: 'Name', onChangeText: setTrackingListName, value: trackingListName, keyboardType: ''}
   ];
 
 return (
