@@ -4,8 +4,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const DropDownList = ({optionsList}) => {
-    const [selectedValue, setSelectedValue] = useState(null);
+const DropDownList = ({optionsList, setSelectedValue, selectedValue}) => {
 
     const placeholder = {
         label: 'Select a category...',

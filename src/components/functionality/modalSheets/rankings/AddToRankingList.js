@@ -8,6 +8,7 @@ export function AddToRankingList() {
   const [rankingItemName, setRankingItemName] = useState('');
   const [rankingItemNotes, setRankingItemNotes] = useState('');
   const [rankValue, setRankValue] = useState('');
+  const [rankingListState, setRankingListState] = useState('Rankr');
   const rankingList = ['Rankr', 'TV Rankings', 'Movie Rankings', 'Dinner Rankings'];
   const modalButtonItems = [
     {text: 'Cancel', onPress: () => HandleClosePress(navigation)},
@@ -26,6 +27,8 @@ export function AddToRankingList() {
         dropDownItems={rankingList} 
         modalTextInputItems={modalTextInputItems} 
         modalButtonItems={modalButtonItems}
+        setDropDownSelectedValue={setRankingListState}
+        dropSelectedDownValue={rankingListState}
       />
   );
 };

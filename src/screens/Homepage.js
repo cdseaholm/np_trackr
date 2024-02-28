@@ -5,8 +5,8 @@ import { Stats } from "./MainScreens/Stats"
 import { Goals } from "./MainScreens/Goals"
 import { Calendar } from "./MainScreens/Calendar"
 import { FontAwesome } from '@expo/vector-icons';
-import { withFAB } from "../../components/functionality/screenFABs/MainFloatingActionButton";
-import { HomeFABs, CalendarFABs, StatFABs, GoalFABs } from "../../components/functionality/screenFABs/FABs";
+import { withFAB } from "../components/functionality/screenFABs/ScreenAdditions";
+import { HomeFABs, CalendarFABs, StatFABs, GoalFABs } from "../components/functionality/screenFABs/FABs";
 
 
 const Homepage = ({ navigation }) => {
