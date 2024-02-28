@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomProfileModalSheet } from './src/components/functionality/modalSheets/BottomProfileModalSheet';
-import Homepage from './src/screens/Homepage/Homepage';
+import Homepage from './src/screens/Homepage';
 import MainAppbar from './src/components/functionality/Main-appbar';
 import { AddToRankingList } from './src/components/functionality/modalSheets/rankings/AddToRankingList';
 import { CreateNewRankingList } from './src/components/functionality/modalSheets/rankings/CreateNewRankingList';

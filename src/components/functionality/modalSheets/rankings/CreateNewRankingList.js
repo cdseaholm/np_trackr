@@ -23,6 +23,8 @@ export function CreateNewRankingList() {
         dropDownItems={null} 
         modalTextInputItems={modalTextInputItems} 
         modalButtonItems={modalButtonItems}
+        setDropDownSelectedValue={null}
+        dropSelectedDownValue={null}
       />
   );
 };

@@ -1,7 +1,6 @@
 import http from "../http-common";
 
 class AccountDataService {
-
   //authenticate
   authenticate(session_id) {
     return http.post("/authenticate", session_id);

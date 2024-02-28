@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard
 import DropDownList from '../DropDownList';
 import { Divider } from 'react-native-paper';
 
-export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems}) {
+export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems, setDropDownSelectedValue, dropSelectedDownValue}) {
   var dimensionsMultiplier = 4.5;
   var dropDownValue = 0;
   if (dropDownItems != null) {
@@ -68,7 +68,7 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
           <Divider style={{backgroundColor: 'black', height: 1, width: '80%', alignSelf: 'center', marginVertical: 15}} />
           {dropDownItems !== null &&
           <View style={{marginVertical: 15}}>
-            <DropDownList optionsList={dropDownItems} />
+            <DropDownList optionsList={dropDownItems} setSelectedValue={setDropDownSelectedValue} selectedValue={dropSelectedDownValue} />
           </View>
           }
           {textItems}

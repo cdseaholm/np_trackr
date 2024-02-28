@@ -7,7 +7,8 @@ export function AddToTrackingList() {
   const navigation = useNavigation();
   const [trackingItemName, setTrackingItemName] = useState('');
   const [trackingItemNotes, setTrackingItemNotes] = useState('');
-  const rankingList = ['Trackr'];
+  const trackingList = ['Trackr'];
+  const [trackingListState, setRankingListState] = useState('Ranker');
   const modalButtonItems = [
     {text: 'Cancel', onPress: () => HandleClosePress(navigation)},
     {text: 'Create', onPress: () => HandleClosePress(navigation)}
@@ -21,9 +22,11 @@ export function AddToTrackingList() {
       <ModalSheetTemplate 
         modalTopStartValue={0}
         modalTitle='Log new Tracker Item'
-        dropDownItems={rankingList} 
+        dropDownItems={trackingList} 
         modalTextInputItems={modalTextInputItems} 
         modalButtonItems={modalButtonItems}
+        setDropDownSelectedValue={setRankingListState}
+        dropSelectedDownValue={trackingListState}
       />
   );
 };

@@ -9,6 +9,7 @@ export function AddToCustomList() {
   const [customItemNotes, setCustomItemNotes] = useState('');
   const [rankValue, setRankValue] = useState('');
   const customList = ['Custom'];
+  const [customListState, setCustomListState] = useState('Custom');
   const modalButtonItems = [
     {text: 'Cancel', onPress: () => HandleClosePress(navigation)},
     {text: 'Create', onPress: () => HandleClosePress(navigation)}
@@ -26,6 +27,8 @@ export function AddToCustomList() {
         dropDownItems={customList} 
         modalTextInputItems={modalTextInputItems} 
         modalButtonItems={modalButtonItems}
+        setDropDownSelectedValue={setCustomListState}
+        dropSelectedDownValue={customListState}
       />
   );
 };

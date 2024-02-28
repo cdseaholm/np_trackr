@@ -22,6 +22,8 @@ return (
         dropDownItems={null}
         modalTextInputItems={modalTextInputItems} 
         modalButtonItems={modalButtonItems}
+        setDropDownSelectedValue={null}
+        dropSelectedDownValue={null}
   />
 );
 };
