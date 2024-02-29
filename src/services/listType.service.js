@@ -18,12 +18,12 @@ class ListTypeDataService {
 
   //get all
   getAll() {
-    return http.get("/api/listType/listType");
+    return http.get("/api/listType/get/all");
   }
 
   //get by name
   getByName(name) { 
-    return http.get(`/api/listType/listType/${name}`); 
+    return http.get(`/api/listType/get/${name}`); 
   }
 }
 

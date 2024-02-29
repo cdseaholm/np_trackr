@@ -2,13 +2,18 @@ import React, { useState} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { ModalSheetTemplate } from './ModalSheetTemplate';
 import { HandleClosePress } from '../basicHandles/HandleClose';
-import { HandleCreateList } from './modalSheetHandles/HandleCreateList';
+import { HandleCreateList } from '../basicHandles/HandleCreate';
+import { FetchGetItems } from '../../../services/fetchServices/FetchGetItems';
+import { EXPO_PUBLIC_LIST_TYPE_IP_URL } from '@env';
 
-export function CreateNewList() {
+
+
+export async function CreateNewList() {
+  const getIpHandle = `${EXPO_PUBLIC_LIST_TYPE_IP_URL}/get/all`;
   const navigation = useNavigation();
   const [listName, setlistName] = useState('');
   const [category, setCategory] = useState('');
-  const items = ['Ranker', 'Tracker', 'Custom'];
+  const items = await FetchGetItems(getIpHandle);
   const modalButtonItems = [
     {text: 'Cancel', onPress: () => HandleClosePress(navigation)},
     {text: 'Create', onPress: () => HandleCreateList(listName, category, navigation)}
