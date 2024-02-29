@@ -24,6 +24,9 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.account = require("./accounts.model.js")(sequelize, Sequelize);
-db.list_type = require("./listType.model.js")(sequelize, Sequelize);
+db.listType = require("./listType.model.js")(sequelize, Sequelize);
+db.trackerItem = require("./trackerItem.model.js")(sequelize, Sequelize);
+db.rankerItem = require("./rankerItem.model.js")(sequelize, Sequelize);
+db.customItem = require("./customItem.model.js")(sequelize, Sequelize);
 
 module.exports = db;

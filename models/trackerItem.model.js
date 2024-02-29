@@ -1,12 +1,15 @@
 module.exports = (sequelize, Sequelize) => {
-    const ListType = sequelize.define("listType", {
+    const TrackerItem = sequelize.define("trackerItem", {
       name: {
         type: Sequelize.STRING
       },
       category: {
         type: Sequelize.STRING
+      },
+      notes: {
+        type: Sequelize.STRING
       }
     });
   
-    return ListType;
+    return TrackerItem;
   };

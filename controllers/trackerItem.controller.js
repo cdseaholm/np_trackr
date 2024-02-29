@@ -1,55 +1,42 @@
 const db = require("../models");
-const List_Type = db.listType;
+const Tracker_Item = db.trackerItem;
 const Op = db.Sequelize.Op;
 
 
 exports.create = async (req, res) => {
-    console.log('Request body:', req.body);
-    if (!req.body.name || !req.body.category) {
-      res.status(400).send({
-        message: "Content can not be empty!"
-      });
-      return;
-    }
+  console.log('Request body:', req.body);
 
-    const existingList = await List_Type.findOne({ where: { name: req.body.name, category: req.body.category } });
-      if (existingList) {
-        res.status(400).send({
-          message: "A list with this name already exists!"
-        });
-        return;
-      }
-
-    const list_Type = {
-      name: req.body.name,
-      category: req.body.category
+    const tracker_Item = {
+      name: req.body[0].name,
+      category: req.body[0].category,
+      notes: req.body[0].notes,
     };
   
-    List_Type.create(list_Type)
+    Tracker_Item.create(tracker_Item)
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         console.log('Error:', err);
         res.status(500).send({
-          message: err.message || "Some error occurred while creating the List_Type."
+          message: err.message || "Some error occurred while creating the Tracker_Item."
         });
       });
   };
   
   //delete all
   exports.deleteAll = (req, res) => {
-    List_Type.destroy({
+    Tracker_Item.destroy({
       where: {},
       truncate: false
     })
       .then(nums => {
-        res.send({ message: `${nums} List_Types were deleted successfully!` });
+        res.send({ message: `${nums} Tracker_Items were deleted successfully!` });
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all list_Types."
+            err.message || "Some error occurred while removing all tracker_Items."
         });
       });
   };
@@ -58,19 +45,19 @@ exports.create = async (req, res) => {
   exports.delete = (req, res) => {
     const name = req.body.name;
   
-    List_Type.destroy({
+    Tracker_Item.destroy({
       where: { name: name }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "List_Type was deleted successfully!"
+            message: "Tracker_Item was deleted successfully!"
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete List_Type with name=" + name
+          message: "Could not delete Tracker_Item with name=" + name
         });
       });
   };
@@ -80,14 +67,14 @@ exports.create = async (req, res) => {
     const category = req.query.category;
       var condition = category ? { category: { [Op.iLike]: `%${category}%` } } : null;
     
-      List_Type.findAll({ where: condition })
+      Tracker_Item.findAll({ where: condition })
         .then(data => {
           res.send(data);
         })
         .catch(err => {
           res.status(500).send({
             message:
-              err.message || "Some error occurred while retrieving list_Types."
+              err.message || "Some error occurred while retrieving tracker_Items."
           });
         });
   };
@@ -95,17 +82,17 @@ exports.create = async (req, res) => {
   //get by name
   exports.getByName = (req, res) => {
     const name = req.params.name;
-    List_Type.findOne({ where: { name: name } })
+    Tracker_Item.findOne({ where: { name: name } })
         .then(data => {
             if (data) {
                 res.send({ data });
             } else {
-                res.send({ message: `Cannot find List_Type with name=${name}.`});
+                res.send({ message: `Cannot find Tracker_Item with name=${name}.`});
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Error retrieving List_Type with name=" + name
+                message: err.message || "Error retrieving Tracker_Item with name=" + name
             });
         });
   };

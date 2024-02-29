@@ -13,10 +13,10 @@ module.exports = app => {
     router.delete("/delete/:name", listType.delete);
 
     //get all  
-    router.get("/listType", listType.findAll);
+    router.get("/get/all", listType.findAll);
 
     //get by name
-    router.get("/listType/:name", listType.getByName);
+    router.get("/get/:name", listType.getByName);
 
 
     app.use('/api/listType', router);
