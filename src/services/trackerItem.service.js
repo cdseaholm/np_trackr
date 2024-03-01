@@ -23,7 +23,12 @@ class TrackerItemDataService {
 
   //get by name
   getByName(name) { 
-    return http.get(`/api/trackerItem/${name}`); 
+    return http.get(`/api/trackerItem/get/${name}`); 
+  }
+
+  //update by name
+  update(name, data) {
+    return http.put(`/update/${name}`, data);
   }
 }
 

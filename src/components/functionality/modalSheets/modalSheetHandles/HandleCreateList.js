@@ -1,16 +1,15 @@
 import React from 'react';
 import { Alert } from 'react-native';
 import { EXPO_PUBLIC_LIST_TYPE_IP_URL } from '@env'
-import fetch from 'node-fetch';
 import { FetchCreate } from '../../../../services/fetchServices/FetchCreate';
 
 export async function HandleCreateList(name, category, navigation) {
-  console.log('EXPO_PUBLIC_LIST_TYPE_IP_URL:', EXPO_PUBLIC_LIST_TYPE_IP_URL);
+  var ipToPass = `${EXPO_PUBLIC_LIST_TYPE_IP_URL}/get/all`;
   if (!name || !category) {
     Alert.alert('Please fill in all fields');
   } else {
     try {
-      const response = await FetchCreate([{ name: name, category: category }], EXPO_PUBLIC_LIST_TYPE_IP_URL);
+      const response = await FetchCreate([{ name: name, category: category }], ipToPass);
       console.log('Response:', response);
       if (response.ok) {
         const data = await response.json();
