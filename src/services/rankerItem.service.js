@@ -23,7 +23,12 @@ class RankerItemDataService {
 
   //get by name
   getByName(name) { 
-    return http.get(`/api/rankerItem/${name}`); 
+    return http.get(`/api/rankerItem/get/${name}`); 
+  }
+
+  //update by name
+  update(name, data) {
+    return http.put(`/update/${name}`, data);
   }
 }
 

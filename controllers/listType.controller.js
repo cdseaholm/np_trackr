@@ -77,10 +77,8 @@ exports.create = async (req, res) => {
   
   //get all
   exports.findAll = (req, res) => {
-    const category = req.query.category;
-      var condition = category ? { category: { [Op.iLike]: `%${category}%` } } : null;
     
-      List_Type.findAll({ where: condition })
+      List_Type.findAll()
         .then(data => {
           res.send(data);
         })

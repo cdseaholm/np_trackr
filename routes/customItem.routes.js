@@ -13,11 +13,13 @@ module.exports = app => {
     router.delete("/delete/:name", customItem.delete);
 
     //get all  
-    router.get("get/all", customItem.findAll);
+    router.get("/get/all", customItem.findAll);
 
     //get by name
     router.get("/get/:name", customItem.getByName);
 
+    //update by name
+    router.put("/update/:name", customItem.update);
 
     app.use('/api/customItem', router);
   };

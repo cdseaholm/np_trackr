@@ -96,3 +96,29 @@ exports.create = async (req, res) => {
             });
         });
   };
+
+//update by name
+exports.update = (req, res) => {
+  const name = req.params.name;
+  const { category, notes } = req.query;
+
+  Tracker_Item.update(req.body, {
+    where: { name, category, notes}
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Tracker Item was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update Tracker Item. Maybe Tracker Item was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Tracker Item"
+      });
+    });
+};

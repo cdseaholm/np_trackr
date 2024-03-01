@@ -88,12 +88,38 @@ exports.create = async (req, res) => {
             if (data) {
                 res.send({ data });
             } else {
-                res.send({ message: `Cannot find Ranker_Item with name=${name}.`});
+                res.send({ message: `Cannot find Tracker_Item with name=${name}.`});
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Error retrieving Ranker_Item with name=" + name
+                message: err.message || "Error retrieving Tracker_Item with name=" + name
             });
         });
   };
+
+//update by name
+exports.update = (req, res) => {
+  const name = req.params.name;
+  const { category, notes, rank } = req.query;
+  
+    Ranker_Item.update(req.body, {
+      where: { name, category, notes, rank}
+    })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Ranker Item was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update Ranker Item. Maybe Ranker Item was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Ranker Item"
+      });
+    });
+};

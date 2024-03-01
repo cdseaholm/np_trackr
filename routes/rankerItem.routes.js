@@ -18,6 +18,9 @@ module.exports = app => {
     //get by name
     router.get("/get/:name", rankerItem.getByName);
 
+    //update by name
+    router.put("/update/:name", rankerItem.update);
+
 
     app.use('/api/rankerItem', router);
   };

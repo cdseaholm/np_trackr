@@ -11,6 +11,10 @@ import { AddToTrackingList } from './src/components/functionality/modalSheets/tr
 import { AddToCustomList } from './src/components/functionality/modalSheets/customLists/AddToCustomList';
 import { CreateNewCustomList } from './src/components/functionality/modalSheets/customLists/CreateNewCustomList';
 import { CreateNewList } from './src/components/functionality/modalSheets/CreateNewList';
+import { EditModalSheetSet } from './src/components/functionality/modalSheets/editing/EditModalSheetSet';
+import { EditSpecificSheet } from './src/components/functionality/modalSheets/editing/EditSpecificSheet';
+
+
 
 
 const RootStack = createNativeStackNavigator();
@@ -29,7 +33,9 @@ const RootStackScreen = () => {
     ['CreateNewTrackingList', CreateNewTrackingList],
     ['AddToCustomList', AddToCustomList],
     ['CreateNewCustomList', CreateNewCustomList],
-    ['CreateNewList', CreateNewList]
+    ['CreateNewList', CreateNewList],
+    ['EditModalSheetSet', EditModalSheetSet],
+    ['EditSpecificSheet', EditSpecificSheet],
   ]
 
   var rootScreensMap = rootScreens.map((screen, index) => {

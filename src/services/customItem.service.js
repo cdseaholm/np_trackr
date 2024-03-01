@@ -23,7 +23,12 @@ class CustomItemDataService {
 
   //get by name
   getByName(name) { 
-    return http.get(`/api/customItem/${name}`); 
+    return http.get(`/api/customItem/get/${name}`); 
+  }
+
+  //update by name
+  update(name, data) {
+    return http.put(`/update/${name}`, data);
   }
 }
 

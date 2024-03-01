@@ -87,12 +87,38 @@ exports.create = async (req, res) => {
             if (data) {
                 res.send({ data });
             } else {
-                res.send({ message: `Cannot find Custom_Item with name=${name}.`});
+                res.send({ message: `Cannot find Tracker_Item with name=${name}.`});
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Error retrieving Custom_Item with name=" + name
+                message: err.message || "Error retrieving Tracker_Item with name=" + name
             });
         });
   };
+
+//update by name
+exports.update = (req, res) => {
+  const name = req.params.name;
+  const { category, notes } = req.query;
+
+  Custom_Item.update(req.body, {
+    where: { name, category, notes}
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Custom Item was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update Custom Item. Maybe Account was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Custom item"
+      });
+    });
+};
