@@ -10,17 +10,24 @@ import { UpdateList } from '../../../../services/fetchServices/FetchUpdateList';
 
 
 export function EditSpecificSheet({ route, navigation }) {
-    const selectedItem = route.params.selectedItemObject;
+    const object = route.params.selectedItemObject;
     const [updatedSheet, setUpdatedSheet] = useState([]);
     const [dropSelectedDownValue, setDropDownSelectedValue] = useState('');
-    const [itemsFetched, setItemsFetched] = useState([]);
+    const [currentSheet, setCurrentSheet] = useState([]);
     const items = ['Ranker', 'Tracker', 'Custom'].map(item => ({ name: item, value: item }));
-    
+    var selectedItem = null;
+    if (!object) {
+        Alert.alert('Error: EditSpecificSheet');
+    } else {
+    selectedItem = {
+        name: object.label,
+        category: object.category,
+    }
+  }
 
     var ipToPass = ``;
     var ipType = ``;
     if (!selectedItem) {
-    if (!selectedItem.name) {
         Alert.alert('Error: EditSpecificSheet');
     } else {
         if (selectedItem.category === 'Ranker') {
@@ -35,47 +42,39 @@ export function EditSpecificSheet({ route, navigation }) {
         } else {
         Alert.alert('Error: EditSpecificSheet');
         }
-    }
-  } else {
-    Alert.alert('Error: EditSpecificSheet');
-    return null; // or render some fallback component
-  }
+      }
 
     useEffect(() => {
         const fetchItems = async () => {
           const itemsFetched = await FetchGetItems(ipToPass);
-          setItemsFetched(itemsFetched);
-          setUpdatedSheet([{
-            name: itemsFetched.name,
-            category: itemsFetched.category,
-            notes: itemsFetched.notes,
-            rank: itemsFetched.rank,
+          const itemsToPass = itemsFetched.map((item, index) => {
+            return {label: item.name, index: index, category: item.category, notes: item.notes, rank: item.rank};
+          });
+          setCurrentSheet([{
+            name: itemsToPass.label,
+            category: itemsToPass.category,
+            notes: itemsToPass.notes,
+            rank: itemsToPass.rank,
         }]);
         };
         fetchItems();
       }, []);
 
-      var toUpdateSheet = [{
-        name: itemsFetched.name,
-        category: itemsFetched.category,
-        notes: itemsFetched.notes,
-      }];
+      currentSheet.map((item) => {
+        setUpdatedSheet({
+          name: item.name,
+          category: item.category,
+          notes: item.notes,
+          rank: item.rank,
+        });
+      });
 
-  if (selectedItem.category === 'Ranker') {
-      toUpdateSheet.push({rank: itemsFetched.rank});
-    }
 
   const modalTextInputItems = [
     {
-      placeholder: updatedSheet.name, 
+      placeholder: currentSheet.name, 
       onChangeText: (newName) => setUpdatedSheet({...updatedSheet, name: newName}), 
       value: updatedSheet.name, 
-      keyboardType: 'default'
-    },
-    {
-      placeholder: updatedSheet.category, 
-      onChangeText: (newCategory) => setUpdatedSheet({...updatedSheet, category: newCategory}), 
-      value: updatedSheet.category, 
       keyboardType: 'default'
     },
     {
@@ -86,7 +85,7 @@ export function EditSpecificSheet({ route, navigation }) {
     }
   ];
 
-  if (updatedSheet.category === 'Ranker' || toUpdateSheet.category === 'Ranker') {
+  if (updatedSheet.category === 'Ranker' || updatedSheet.category === 'Ranker') {
     modalTextInputItems.push(
       {
         placeholder: updatedSheet.rank, 
@@ -97,7 +96,7 @@ export function EditSpecificSheet({ route, navigation }) {
     )
   }
 
-  var toStringTitle = `Update ${toUpdateSheet.category} List`;
+  var toStringTitle = `Update ${updatedSheet.category} List`;
   const modalButtonItems = [
     {text: 'Back', onPress: () => HandleClosePress(navigation)},
     {text: 'Save', onPress: () => UpdateList(ipType, updatedSheet)

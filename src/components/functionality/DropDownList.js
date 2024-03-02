@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const DropDownList = ({optionsList, setSelectedValue, selectedValue}) => {
+const DropDownList = ({optionsList, setSelectedValue, selectedValue, setObject}) => {
+    const [selectedObject, setSelectedObject] = useState(null);
+
     const placeholder = {
-        label: 'Select a category...',
-        value: null,
+        label: 'Select an item...',
+        value: null
     };
 
-    const options = optionsList.map((option, index) => {
-        return { label: option.name, value: option.name, key: index};
+    useEffect(() => {
+        console.log('onValueSet:', selectedValue);
+        console.log('onObjectSet:', selectedObject);
+    }, [selectedValue, selectedObject]);
+
+    const options = optionsList.map((option) => {
+        console.log('options:', option);
+        return {label: option.label, value: `${option.index}_${option.label}`, category: option.category};
     });
 
     return (
@@ -20,9 +28,19 @@ const DropDownList = ({optionsList, setSelectedValue, selectedValue}) => {
             <RNPickerSelect
                 placeholder={placeholder}
                 items={options}
-                onValueChange={(value, index) => {
-                    setSelectedValue(value);
-                  }}
+                onValueChange={(value) => {
+                    if (value !== null) {
+                        const parts = value.split('_');
+                        const objectIndex = parseInt(parts[0], 10);
+                        setSelectedObject(optionsList[objectIndex]);
+                        setSelectedValue(value);
+                        console.log('onValueChange:', value);
+                    }
+                }}
+                onDonePress={() => {
+                    setObject(selectedObject);
+
+                }}
                 value={selectedValue}
             />
                 <Icon>
