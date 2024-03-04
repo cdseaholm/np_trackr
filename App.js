@@ -4,15 +4,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomProfileModalSheet } from './src/components/functionality/modalSheets/BottomProfileModalSheet';
 import Homepage from './src/screens/Homepage';
 import MainAppbar from './src/components/functionality/Main-appbar';
-import { AddToRankingList } from './src/components/functionality/modalSheets/rankings/AddToRankingList';
-import { CreateNewRankingList } from './src/components/functionality/modalSheets/rankings/CreateNewRankingList';
-import { CreateNewTrackingList } from './src/components/functionality/modalSheets/trackings/CreateNewTrackingList';
-import { AddToTrackingList } from './src/components/functionality/modalSheets/trackings/AddToTrackingList';
-import { AddToCustomList } from './src/components/functionality/modalSheets/customLists/AddToCustomList';
-import { CreateNewCustomList } from './src/components/functionality/modalSheets/customLists/CreateNewCustomList';
+import { CreateItemForList } from './src/components/functionality/modalSheets/customLists/CreateItemForList';
 import { CreateNewList } from './src/components/functionality/modalSheets/CreateNewList';
 import { EditModalSheetSet } from './src/components/functionality/modalSheets/editing/EditModalSheetSet';
 import { EditSpecificSheet } from './src/components/functionality/modalSheets/editing/EditSpecificSheet';
+import { CreateItemAttribute } from './src/components/functionality/modalSheets/customLists/CreateItemAttribute';
 
 
 
@@ -27,12 +23,8 @@ const RootStackScreen = () => {
   const closeProfileMenu = () => setProfileMenuVisible(false);
 
   const rootScreens = [
-    ['AddToRankingList', AddToRankingList],
-    ['CreateNewRankingList', CreateNewRankingList],
-    ['AddToTrackingList', AddToTrackingList],
-    ['CreateNewTrackingList', CreateNewTrackingList],
-    ['AddToCustomList', AddToCustomList],
-    ['CreateNewCustomList', CreateNewCustomList],
+    ['CreateItemForList', CreateItemForList],
+    ['CreateItemAttribute', CreateItemAttribute],
     ['CreateNewList', CreateNewList],
     ['EditModalSheetSet', EditModalSheetSet],
     ['EditSpecificSheet', EditSpecificSheet],

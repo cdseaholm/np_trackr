@@ -15,7 +15,7 @@ const DropDownList = ({optionsList, setSelectedValue, selectedValue, setObject})
     useEffect(() => {
         console.log('onValueSet:', selectedValue);
         console.log('onObjectSet:', selectedObject);
-    }, [selectedValue, selectedObject]);
+    }, [selectedValue, selectedObject], setObject);
 
     const options = optionsList.map((option) => {
         console.log('options:', option);
@@ -39,6 +39,7 @@ const DropDownList = ({optionsList, setSelectedValue, selectedValue, setObject})
                 }}
                 onDonePress={() => {
                     setObject(selectedObject);
+                    console.log('onDonePress:', selectedObject);
 
                 }}
                 value={selectedValue}

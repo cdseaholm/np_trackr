@@ -1,42 +1,43 @@
 const db = require("../models");
-const Tracker_Item = db.trackerItem;
+const Item_Attribute = db.itemAttribute;
 const Op = db.Sequelize.Op;
 
 
 exports.create = async (req, res) => {
-  console.log('Request body:', req.body);
-
-    const tracker_Item = {
-      name: req.body[0].name,
-      category: req.body[0].category,
-      notes: req.body[0].notes,
-    };
+    console.log('Request body:', req.body);
   
-    Tracker_Item.create(tracker_Item)
+      const item_Attribute = {
+        name: req.body[0].name,
+        itemid: req.body[0].itemid,
+        value: req.body[0].value,
+        type: req.body[0].type,
+      };
+  
+    Item_Attribute.create(item_Attribute)
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         console.log('Error:', err);
         res.status(500).send({
-          message: err.message || "Some error occurred while creating the Tracker_Item."
+          message: err.message || "Some error occurred while creating the Item_Attribute."
         });
       });
   };
   
   //delete all
   exports.deleteAll = (req, res) => {
-    Tracker_Item.destroy({
+    Item_Attribute.destroy({
       where: {},
       truncate: false
     })
       .then(nums => {
-        res.send({ message: `${nums} Tracker_Items were deleted successfully!` });
+        res.send({ message: `${nums} Item_Attributes were deleted successfully!` });
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all tracker_Items."
+            err.message || "Some error occurred while removing all item_Attributes."
         });
       });
   };
@@ -45,36 +46,36 @@ exports.create = async (req, res) => {
   exports.delete = (req, res) => {
     const name = req.body.name;
   
-    Tracker_Item.destroy({
+    Item_Attribute.destroy({
       where: { name: name }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Tracker_Item was deleted successfully!"
+            message: "Item_Attribute was deleted successfully!"
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Tracker_Item with name=" + name
+          message: "Could not delete Item_Attribute with name=" + name
         });
       });
   };
   
   //get all
   exports.findAll = (req, res) => {
-    const category = req.query.category;
-      var condition = category ? { category: { [Op.iLike]: `%${category}%` } } : null;
+    const itemid = req.query.itemid;
+      var condition = itemid ? { itemid: { [Op.iLike]: `%${itemid}%` } } : null;
     
-      Tracker_Item.findAll({ where: condition })
+      Item_Attribute.findAll({ where: condition })
         .then(data => {
           res.send(data);
         })
         .catch(err => {
           res.status(500).send({
             message:
-              err.message || "Some error occurred while retrieving tracker_Items."
+              err.message || "Some error occurred while retrieving item_Attributes."
           });
         });
   };
@@ -82,7 +83,7 @@ exports.create = async (req, res) => {
   //get by name
   exports.getByName = (req, res) => {
     const name = req.params.name;
-    Tracker_Item.findOne({ where: { name: name } })
+    Item_Attribute.findOne({ where: { name: name } })
         .then(data => {
             if (data) {
                 res.send({ data });
@@ -100,25 +101,25 @@ exports.create = async (req, res) => {
 //update by name
 exports.update = (req, res) => {
   const name = req.params.name;
-  const { category, notes } = req.query;
+  const { itemid, value, type } = req.query;
 
-  Tracker_Item.update(req.body, {
-    where: { name, category, notes}
+  Item_Attribute.update(req.body, {
+    where: { name, itemid, value, type}
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Tracker Item was updated successfully."
+          message: "Custom Item was updated successfully."
         });
       } else {
         res.send({
-          message: `Cannot update Tracker Item. Maybe Tracker Item was not found or req.body is empty!`
+          message: `Cannot update Custom Item. Maybe Account was not found or req.body is empty!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Tracker Item"
+        message: "Error updating Custom item"
       });
     });
 };

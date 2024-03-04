@@ -3,11 +3,11 @@ import { useNavigation } from '@react-navigation/native';
 import { ModalSheetTemplate } from '../ModalSheetTemplate';
 import { HandleClosePress } from '../../basicHandles/HandleClose';
 import { FetchGetAllItems, FetchGetItems } from '../../../../services/fetchServices/FetchGetItems';
-import { EXPO_PUBLIC_LIST_TYPE_IP_URL } from '@env';
+import { EXPO_PUBLIC_LIST_IP_URL } from '@env';
 
 
 export function EditModalSheetSet() {
-  const ipToPass = `${EXPO_PUBLIC_LIST_TYPE_IP_URL}/get/all`;
+  const ipToPass = `${EXPO_PUBLIC_LIST_IP_URL}/get/all`;
   const navigation = useNavigation();
   const [items, setItems] = useState([]);
   const [selectedValue, setSelectedValue] = useState('');

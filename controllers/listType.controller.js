@@ -5,14 +5,14 @@ const Op = db.Sequelize.Op;
 
 exports.create = async (req, res) => {
     console.log('Request body:', req.body);
-    if (!req.body.name || !req.body.category) {
+    if (!req.body.name) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
       return;
     }
 
-    const existingList = await List_Type.findOne({ where: { name: req.body.name, category: req.body.category } });
+    const existingList = await List_Type.findOne({ where: { name: req.body.name } });
       if (existingList) {
         res.status(400).send({
           message: "A list with this name already exists!"
@@ -22,7 +22,6 @@ exports.create = async (req, res) => {
 
     const list_Type = {
       name: req.body.name,
-      category: req.body.category
     };
   
     List_Type.create(list_Type)

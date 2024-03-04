@@ -1,26 +1,23 @@
 import React from 'react';
 import { Alert } from 'react-native';
-import { EXPO_PUBLIC_LIST_TYPE_IP_URL } from '@env'
+import { EXPO_PUBLIC_LIST_IP_URL } from '@env'
 import { FetchCreate } from '../../../../services/fetchServices/FetchCreate';
 
-export async function HandleCreateList(name, category, navigation) {
-  var ipToPass = `${EXPO_PUBLIC_LIST_TYPE_IP_URL}/get/all`;
-  if (!name || !category) {
-    Alert.alert('Please fill in all fields');
+export async function HandleCreateList(name, navigation) {
+  var ipToPass = `${EXPO_PUBLIC_LIST_IP_URL}`;
+  if (!name) {
+    Alert.alert('Please name this list');
   } else {
     try {
-      const response = await FetchCreate([{ name: name, category: category }], ipToPass);
+      const response = await FetchCreate({ name: name }, ipToPass); // Removed the array
       console.log('Response:', response);
       if (response.ok) {
         const data = await response.json();
-        console.log('Data:', data);
-        if (category === 'Ranker') {
-            navigation.navigate('AddToRankingList', { list: data });
-        } else if (category === 'Tracker') {
-            navigation.navigate('AddToTrackingList', { list: data });
-        } else {
-            navigation.navigate('AddToCustomList', { list: data, category: 'Custom' });
+        const listData = {
+          name: data.name,
+          id: data.id
         }
+        navigation.navigate('CreateItemForList', { list: listData });
       } else {
         const data = await response.json();
         Alert.alert(data.message);
@@ -30,5 +27,4 @@ export async function HandleCreateList(name, category, navigation) {
     }
   }
 }
-    
     

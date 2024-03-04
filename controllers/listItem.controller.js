@@ -1,43 +1,41 @@
 const db = require("../models");
-const Ranker_Item = db.rankerItem;
+const List_Item = db.listItem;
 const Op = db.Sequelize.Op;
 
 
 exports.create = async (req, res) => {
     console.log('Request body:', req.body);
-
-    const ranker_Item = {
-      name: req.body[0].name,
-      category: req.body[0].category,
-      notes: req.body[0].notes,
-      rank: req.body[0].rank
-    };
   
-    Ranker_Item.create(ranker_Item)
+      const list_Item = {
+        name: req.body[0].name,
+        listid: req.body[0].listid,
+      };
+  
+    List_Item.create(list_Item)
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         console.log('Error:', err);
         res.status(500).send({
-          message: err.message || "Some error occurred while creating the Ranker_Item."
+          message: err.message || "Some error occurred while creating the List_Item."
         });
       });
   };
   
   //delete all
   exports.deleteAll = (req, res) => {
-    Ranker_Item.destroy({
+    List_Item.destroy({
       where: {},
       truncate: false
     })
       .then(nums => {
-        res.send({ message: `${nums} Ranker_Items were deleted successfully!` });
+        res.send({ message: `${nums} List_Items were deleted successfully!` });
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all ranker_Items."
+            err.message || "Some error occurred while removing all list_Items."
         });
       });
   };
@@ -46,19 +44,19 @@ exports.create = async (req, res) => {
   exports.delete = (req, res) => {
     const name = req.body.name;
   
-    Ranker_Item.destroy({
+    List_Item.destroy({
       where: { name: name }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Ranker_Item was deleted successfully!"
+            message: "List_Item was deleted successfully!"
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Ranker_Item with name=" + name
+          message: "Could not delete List_Item with name=" + name
         });
       });
   };
@@ -68,14 +66,14 @@ exports.create = async (req, res) => {
     const category = req.query.category;
       var condition = category ? { category: { [Op.iLike]: `%${category}%` } } : null;
     
-      Ranker_Item.findAll({ where: condition })
+      List_Item.findAll({ where: condition })
         .then(data => {
           res.send(data);
         })
         .catch(err => {
           res.status(500).send({
             message:
-              err.message || "Some error occurred while retrieving ranker_Items."
+              err.message || "Some error occurred while retrieving list_Items."
           });
         });
   };
@@ -83,7 +81,7 @@ exports.create = async (req, res) => {
   //get by name
   exports.getByName = (req, res) => {
     const name = req.params.name;
-    Ranker_Item.findOne({ where: { name: name } })
+    List_Item.findOne({ where: { name: name } })
         .then(data => {
             if (data) {
                 res.send({ data });
@@ -101,25 +99,25 @@ exports.create = async (req, res) => {
 //update by name
 exports.update = (req, res) => {
   const name = req.params.name;
-  const { category, notes, rank } = req.query;
-  
-    Ranker_Item.update(req.body, {
-      where: { name, category, notes, rank}
-    })
+  const listid = req.params.listid;
+
+  List_Item.update(req.body, {
+    where: { name, listid }
+  })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Ranker Item was updated successfully."
+          message: "Custom Item was updated successfully."
         });
       } else {
         res.send({
-          message: `Cannot update Ranker Item. Maybe Ranker Item was not found or req.body is empty!`
+          message: `Cannot update Custom Item. Maybe Account was not found or req.body is empty!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Ranker Item"
+        message: "Error updating Custom item"
       });
     });
 };

@@ -13,13 +13,10 @@ export async function HandleAddItem(handleParent, inputItemContent, navigation) 
   var itemCombo = [];
   var ipHandle = '';
 
-  if (handleParent === 'AddToRankingList') {
     itemContent = [
       {
         name: inputItemContent.name,
-        category: inputItemContent.category,
-        notes: inputItemContent.notes,
-        rank: inputItemContent.rank,
+        listid: inputItemContent.category,
       }
     ]
     itemCombo = [{
@@ -28,35 +25,7 @@ export async function HandleAddItem(handleParent, inputItemContent, navigation) 
       rank: inputItemContent.rank,
     }]
     ipHandle = EXPO_PUBLIC_RANKER_ITEM_IP_URL;
-  } else if (handleParent === 'AddToTrackingList') {
-    itemContent = [
-      {
-        name: inputItemContent.name,
-        category: inputItemContent.category,
-        notes: inputItemContent.notes
-      }
-    ]
-    itemCombo = [{
-      name: inputItemContent.name,
-      category: inputItemContent.category
-    }]
-    ipHandle = EXPO_PUBLIC_TRACKER_ITEM_IP_URL;
-  } else if (handleParent === 'AddToCustomList') {
-    itemContent = [
-      {
-        name: inputItemContent.name,
-        category: inputItemContent.category,
-        notes: inputItemContent.notes
-      }
-    ]
-    itemCombo = [{
-      name: inputItemContent.name,
-      category: inputItemContent.category
-    }]
-    ipHandle = EXPO_PUBLIC_CUSTOM_ITEM_IP_URL;
-  } else {
-    Alert.alert('Error: HandleAddItem');
-  }
+  
 
   if (!itemCombo) {
     Alert.alert('Please fill in required fields');

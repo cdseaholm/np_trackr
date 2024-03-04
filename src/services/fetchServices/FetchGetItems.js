@@ -20,7 +20,11 @@ export async function FetchGetAllItems(ipHandle) {
         },
         
     });
-    const data = await response.json();
-    console.log('Data:', data);
-    return data;
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    } else {
+        const data = await response.json();
+        console.log('Data:', data);
+        return data;
+    }
 }

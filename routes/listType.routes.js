@@ -19,5 +19,5 @@ module.exports = app => {
     router.get("/get/:name", listType.getByName);
 
 
-    app.use('/api/listType', router);
+    app.use('/api/list', router);
   };

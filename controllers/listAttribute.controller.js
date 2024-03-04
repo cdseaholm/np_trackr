@@ -1,42 +1,43 @@
 const db = require("../models");
-const Custom_Item = db.customItem;
+const List_Attribute = db.listAttribute;
 const Op = db.Sequelize.Op;
 
 
 exports.create = async (req, res) => {
     console.log('Request body:', req.body);
   
-      const custom_Item = {
+      const list_Attribute = {
         name: req.body[0].name,
-        category: req.body[0].category,
-        notes: req.body[0].notes,
+        itemid: req.body[0].itemid,
+        value: req.body[0].value,
+        type: req.body[0].type,
       };
   
-    Custom_Item.create(custom_Item)
+    List_Attribute.create(list_Attribute)
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         console.log('Error:', err);
         res.status(500).send({
-          message: err.message || "Some error occurred while creating the Custom_Item."
+          message: err.message || "Some error occurred while creating the List_Attribute."
         });
       });
   };
   
   //delete all
   exports.deleteAll = (req, res) => {
-    Custom_Item.destroy({
+    List_Attribute.destroy({
       where: {},
       truncate: false
     })
       .then(nums => {
-        res.send({ message: `${nums} Custom_Items were deleted successfully!` });
+        res.send({ message: `${nums} List_Attributes were deleted successfully!` });
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all custom_Items."
+            err.message || "Some error occurred while removing all list_Attributes."
         });
       });
   };
@@ -45,36 +46,36 @@ exports.create = async (req, res) => {
   exports.delete = (req, res) => {
     const name = req.body.name;
   
-    Custom_Item.destroy({
+    List_Attribute.destroy({
       where: { name: name }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Custom_Item was deleted successfully!"
+            message: "List_Attribute was deleted successfully!"
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Custom_Item with name=" + name
+          message: "Could not delete List_Attribute with name=" + name
         });
       });
   };
   
   //get all
   exports.findAll = (req, res) => {
-    const category = req.query.category;
-      var condition = category ? { category: { [Op.iLike]: `%${category}%` } } : null;
+    const listid = req.query.listid;
+      var condition = listid ? { listid: { [Op.iLike]: `%${listid}%` } } : null;
     
-      Custom_Item.findAll({ where: condition })
+      List_Attribute.findAll({ where: condition })
         .then(data => {
           res.send(data);
         })
         .catch(err => {
           res.status(500).send({
             message:
-              err.message || "Some error occurred while retrieving custom_Items."
+              err.message || "Some error occurred while retrieving list_Attributes."
           });
         });
   };
@@ -82,7 +83,7 @@ exports.create = async (req, res) => {
   //get by name
   exports.getByName = (req, res) => {
     const name = req.params.name;
-    Custom_Item.findOne({ where: { name: name } })
+    List_Attribute.findOne({ where: { name: name } })
         .then(data => {
             if (data) {
                 res.send({ data });
@@ -100,10 +101,10 @@ exports.create = async (req, res) => {
 //update by name
 exports.update = (req, res) => {
   const name = req.params.name;
-  const { category, notes } = req.query;
+  const { itemid, value, type } = req.query;
 
-  Custom_Item.update(req.body, {
-    where: { name, category, notes}
+  List_Attribute.update(req.body, {
+    where: { name, itemid, value, type}
   })
     .then(num => {
       if (num == 1) {

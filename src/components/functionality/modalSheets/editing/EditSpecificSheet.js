@@ -11,7 +11,6 @@ import { UpdateList } from '../../../../services/fetchServices/FetchUpdateList';
 
 export function EditSpecificSheet({ route, navigation }) {
     const object = route.params.selectedItemObject;
-    const [updatedSheet, setUpdatedSheet] = useState([]);
     const [dropSelectedDownValue, setDropDownSelectedValue] = useState('');
     const [currentSheet, setCurrentSheet] = useState([]);
     const items = ['Ranker', 'Tracker', 'Custom'].map(item => ({ name: item, value: item }));
@@ -55,51 +54,43 @@ export function EditSpecificSheet({ route, navigation }) {
             category: itemsToPass.category,
             notes: itemsToPass.notes,
             rank: itemsToPass.rank,
+            index: itemsToPass.index
         }]);
         };
         fetchItems();
       }, []);
 
-      currentSheet.map((item) => {
-        setUpdatedSheet({
-          name: item.name,
-          category: item.category,
-          notes: item.notes,
-          rank: item.rank,
-        });
-      });
-
 
   const modalTextInputItems = [
     {
       placeholder: currentSheet.name, 
-      onChangeText: (newName) => setUpdatedSheet({...updatedSheet, name: newName}), 
-      value: updatedSheet.name, 
+      onChangeText: (newName) => setUpdatedSheet({...currentSheet, name: newName}), 
+      value: currentSheet.name, 
       keyboardType: 'default'
     },
     {
-      placeholder: updatedSheet.notes, 
-      onChangeText: (newNotes) => setUpdatedSheet({...updatedSheet, notes: newNotes}), 
-      value: updatedSheet.notes, 
+      placeholder: currentSheet.notes, 
+      onChangeText: (newNotes) => setUpdatedSheet({...currentSheet, notes: newNotes}), 
+      value: currentSheet.notes, 
       keyboardType: 'default'
     }
   ];
 
-  if (updatedSheet.category === 'Ranker' || updatedSheet.category === 'Ranker') {
+  if (currentSheet.category === 'Ranker' || currentSheet.category === 'Ranker') {
     modalTextInputItems.push(
       {
-        placeholder: updatedSheet.rank, 
-        onChangeText: (newRank) => setUpdatedSheet({...updatedSheet, rank: newRank}), 
-        value: updatedSheet.rank, 
+        placeholder: currentSheet.rank, 
+        onChangeText: (newRank) => setUpdatedSheet({...currentSheet, rank: newRank}), 
+        value: currentSheet.rank, 
         keyboardType: 'numeric'
       }
     )
   }
 
-  var toStringTitle = `Update ${updatedSheet.category} List`;
+  var toStringTitle = `Update ${currentSheet.category} List`;
   const modalButtonItems = [
     {text: 'Back', onPress: () => HandleClosePress(navigation)},
-    {text: 'Save', onPress: () => UpdateList(ipType, updatedSheet)
+    {text: 'Save', onPress: () => UpdateList(ipType, currentSheet)
   .then(() => {
     HandleCloseAllBottomSheets(navigation);
   })},

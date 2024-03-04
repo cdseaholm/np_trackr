@@ -11,8 +11,7 @@ export const GoalFABs = [
 export const HomeFABs = [
     { icon: 'plus', label: 'Create', onPress: (navigation) => navigation.navigate('CreateNewList') },
     { icon: 'pencil', label: 'Add/Edit', onPress: (navigation) => navigation.navigate('EditModalSheetSet') },
-    { icon: 'thumb-up', label: 'Log to a Ranker', onPress: (navigation) => navigation.navigate('AddToRankingList')},
-    { icon: 'chart-bar', label: 'Log to a Tracker', onPress: (navigation) => navigation.navigate('AddToTrackingList')},
+    { icon: 'chart-bar', label: 'Add Item to List', onPress: (navigation) => navigation.navigate('CreateItemForList') },
 ];
 
 export const StatFABs = [

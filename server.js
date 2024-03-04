@@ -41,9 +41,9 @@ app.get("/", (req, res) => {
 
 require("./routes/accounts.routes")(app);
 require("./routes/listType.routes")(app);
-require("./routes/rankerItem.routes")(app);
-require("./routes/trackerItem.routes")(app);
-require("./routes/customItem.routes")(app);
+require("./routes/listItem.routes")(app);
+require("./routes/itemAttribute.routes")(app);
+require("./routes/listAttribute.routes")(app);
 
 app.listen(PORT, '0.0.0.0', function() {
   console.log(`Server is running on port ${PORT}.`);

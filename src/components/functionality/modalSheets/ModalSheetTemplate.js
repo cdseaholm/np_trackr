@@ -3,13 +3,17 @@ import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard
 import DropDownList from '../DropDownList';
 import { Divider } from 'react-native-paper';
 
-export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems, setDropDownSelectedValue, dropSelectedDownValue, setObject}) {
+export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems, setDropDownSelectedValue, dropSelectedDownValue, attributeAddition, setObject}) {
   var dimensionsMultiplier = 4.5;
   var dropDownValue = 0;
+  var attributionValue = 0;
   if (dropDownItems != null) {
     dropDownValue = 1;
   }
-  totalItems=modalTextInputItems.length + dropDownValue;
+  if (attributeAddition != null) {
+    attributionValue = 1;
+  }
+  totalItems=modalTextInputItems.length + dropDownValue + attributionValue;
 
   var dimensionsHeight = (Dimensions.get('window').height / dimensionsMultiplier) + (totalItems * (50 + 30));
   var modalTop = useRef(new Animated.Value(modalTopStartValue)).current;
@@ -51,13 +55,22 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
   });
 
   var buttonItems = modalButtonItems.map((item, index) => {
-  return (
-        <TouchableOpacity key={index} style={{ backgroundColor: 'transparent'}}
-            onPress={item.onPress}>
-          <Text style={{fontSize: 20, color: "black"}}>{item.text}</Text>
-        </TouchableOpacity>
-        );
-  });  
+    return (
+      <TouchableOpacity key={index} style={{ backgroundColor: 'transparent'}}
+          onPress={item.onPress}>
+        <Text style={{fontSize: 20, color: "black"}}>{item.text}</Text>
+      </TouchableOpacity>
+    );
+  });
+  
+  var attributeAddition = attributeAddition.map((item, index) => {
+    return (
+      <TouchableOpacity key={index} style={{ backgroundColor: 'transparent' }}
+          onPress={item.onPress}>
+        <Text style={{fontSize: 18, color: "black"}}>{item.text}</Text>
+      </TouchableOpacity>
+    );
+  });
 
   return (
       <KeyboardAvoidingView behavior='height' style={{flex: 1, justifyContent: 'flex-end'}}>
@@ -72,6 +85,9 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
           </View>
           }
           {textItems}
+          <View style={{marginVertical: 15, alignItems: 'center'}}>
+          {attributeAddition}
+          </View>
           <Divider style={{backgroundColor: 'black', height: 1, width: '80%', alignSelf: 'center', marginVertical: 15}} />
           <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 50, marginVertical: 10}}>
             {buttonItems}
