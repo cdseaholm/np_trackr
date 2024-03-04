@@ -27,7 +27,7 @@ export function MainAppbar({openMenu, closeMenu, isMenuVisible, openProfileMenu,
         </View>
 
         <View style={{justifyContent: "center", paddingRight: 10}}>
-        <Text style={{color: "white", fontSize: 18}}>Financr</Text>
+        <Text style={{color: "white", fontSize: 18}}>NP Listr</Text>
         </View>
 
         

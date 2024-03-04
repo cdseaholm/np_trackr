@@ -1,14 +1,16 @@
 import React from "react"
 import { StatusBar } from 'expo-status-bar';
 import {  View, Text, ImageBackground } from 'react-native';
-import BackgroundMonth from "../../../components/uiComponents/BackgroundMonth";
+import BackgroundMonth from '../../components/uiComponents/BackgroundMonth';
+
 
 export function Home() {
   const monthToUse = BackgroundMonth();
+
   return (
 
-    <View style={{paddingTop: 40, height: '100%'}}>
-      <ImageBackground source={monthToUse} resizeMode="cover" style={{flex: 1}}>
+    <View style={{paddingTop: 40, height: '100%', backgroundColor: 'transparent'}}>
+      <ImageBackground source={monthToUse} resizeMode="cover" style={{flex: 1}}> 
       
       
       <View style={{ 
@@ -34,7 +36,7 @@ export function Home() {
       </View>
         
       
-
+      
 
       <StatusBar style="auto" />
       </ImageBackground>

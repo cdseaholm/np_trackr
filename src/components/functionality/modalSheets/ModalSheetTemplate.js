@@ -3,24 +3,23 @@ import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard
 import DropDownList from '../DropDownList';
 import { Divider } from 'react-native-paper';
 
-export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems}) {
-  var dimensionsMultiplier = 2.5;
-  var dimensionsHeight = Dimensions.get('window').height / dimensionsMultiplier;
-  let dropDownValue = 0;
+export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems, setDropDownSelectedValue, dropSelectedDownValue, attributeAddition, setObject}) {
+  var dimensionsMultiplier = 4.5;
+  var dropDownValue = 0;
+  var attributionValue = 0;
   if (dropDownItems != null) {
     dropDownValue = 1;
   }
-  totalItems=modalButtonItems.length + modalTextInputItems.length + dropDownValue
-
-  if (totalItems > 3) {
-    for (let i = 0; i < totalItems; i++) {
-      dimensionsHeight -= 1;
-    }
+  if (attributeAddition != null) {
+    attributionValue = 1;
   }
-  const modalTop = useRef(new Animated.Value(modalTopStartValue)).current;
+  totalItems=modalTextInputItems.length + dropDownValue + attributionValue;
+
+  var dimensionsHeight = (Dimensions.get('window').height / dimensionsMultiplier) + (totalItems * (50 + 30));
+  var modalTop = useRef(new Animated.Value(modalTopStartValue)).current;
 
   useEffect(() => {
-    const keyboardWillShowListener = Keyboard.addListener(
+    var keyboardWillShowListener = Keyboard.addListener(
       Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
       () => {
         Animated.timing(modalTop, {
@@ -30,7 +29,7 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
         }).start();
       }
     );
-    const keyboardWillHideListener = Keyboard.addListener(
+    var keyboardWillHideListener = Keyboard.addListener(
       Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
       () => {
         Animated.timing(modalTop, {
@@ -46,36 +45,51 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
       keyboardWillShowListener.remove();
     };
   }, []);
-
-  const textItems = modalTextInputItems.map((item, index) => {
+  
+  var textItems = modalTextInputItems.map((item, index) => {
     return (
-            <TextInput key={index} style={{fontSize: 15, color: "black", paddingLeft: 20, width: '100%'}} placeholder={item.placeholder} onChangeText={item.onChangeText} value={item.value} />
+          <View key={index} style={{marginVertical: 15}}>
+            <TextInput style={{height: 50, borderRadius: 20, fontSize: 15, color: "black", paddingLeft: 20, width: '100%', backgroundColor: 'white'}} placeholder={item.placeholder} keyboardType={item.keyboardType} onChangeText={item.onChangeText} value={item.value} enterKeyHint='enter' />
+          </View>
         );
-    });
+  });
 
-  const buttonItems = modalButtonItems.map((item, index) => {
+  var buttonItems = modalButtonItems.map((item, index) => {
     return (
-        <TouchableOpacity key={index} style={{ backgroundColor: 'transparent', padding: 15, alignContent: 'flex-start' }}
-            onPress={item.onPress}>
+      <TouchableOpacity key={index} style={{ backgroundColor: 'transparent'}}
+          onPress={item.onPress}>
         <Text style={{fontSize: 20, color: "black"}}>{item.text}</Text>
-        </TouchableOpacity>
-        );
-    });  
+      </TouchableOpacity>
+    );
+  });
+  
+  var attributeAddition = attributeAddition.map((item, index) => {
+    return (
+      <TouchableOpacity key={index} style={{ backgroundColor: 'transparent' }}
+          onPress={item.onPress}>
+        <Text style={{fontSize: 18, color: "black"}}>{item.text}</Text>
+      </TouchableOpacity>
+    );
+  });
 
   return (
       <KeyboardAvoidingView behavior='height' style={{flex: 1, justifyContent: 'flex-end'}}>
-        <Animated.View style={{backgroundColor: 'rgb(237, 235, 228)', borderTopStartRadius: 20, borderTopEndRadius: 20, padding: 15, height: dimensionsHeight, top: modalTop, justifyContent: 'space-evenly'}}>
-          <Text style={{color: "black", textAlign: 'center', fontSize: 20, textDecorationLine: 'underline'}}>
+        <Animated.View style={{backgroundColor: 'rgb(237, 235, 228)', borderTopStartRadius: 20, borderTopEndRadius: 20, padding: 15, height: dimensionsHeight, top: modalTop}}>
+          <Text style={{color: "black", textAlign: 'center', fontSize: 20, textDecorationLine: 'underline', marginVertical: 10}}>
             {modalTitle}
           </Text>
-          {dropDownItems !== null &&
-          <DropDownList optionsList={dropDownItems} />
-          }
-          <View style={{flexDirection: 'row', backgroundColor: 'white', borderRadius: '20', height: 50}}>
-            {textItems}
+          <Divider style={{backgroundColor: 'black', height: 1, width: '80%', alignSelf: 'center', marginVertical: 15}} />
+          {dropDownItems &&
+          <View style={{marginVertical: 15}}>
+            <DropDownList optionsList={dropDownItems} setSelectedValue={setDropDownSelectedValue} selectedValue={dropSelectedDownValue} setObject={setObject} />
           </View>
-          <Divider style={{backgroundColor: 'black', height: 1, width: '80%', alignSelf: 'center'}} />
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          }
+          {textItems}
+          <View style={{marginVertical: 15, alignItems: 'center'}}>
+          {attributeAddition}
+          </View>
+          <Divider style={{backgroundColor: 'black', height: 1, width: '80%', alignSelf: 'center', marginVertical: 15}} />
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 50, marginVertical: 10}}>
             {buttonItems}
           </View>
         </Animated.View>

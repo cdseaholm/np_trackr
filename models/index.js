@@ -23,6 +23,10 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.accounts = require("./account.model.js")(sequelize, Sequelize);
+db.account = require("./accounts.model.js")(sequelize, Sequelize);
+db.listType = require("./listType.model.js")(sequelize, Sequelize);
+db.trackerItem = require("./listItem.model.js")(sequelize, Sequelize);
+db.itemAttribute = require("./itemAttribute.model.js")(sequelize, Sequelize);
+db.listAttribute = require("./listAttribute.model.js")(sequelize, Sequelize);
 
 module.exports = db;

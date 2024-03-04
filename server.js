@@ -1,10 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
 
 var allowedOrigins = process.env.EXPO_PUBLIC_ALLOWED_ORIGINS.split(',');
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8082;
 
 console.log('Allowed origins: ' + allowedOrigins);
 
@@ -38,7 +39,11 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to cdseaholm application." });
 });
 
-require("./routes/account.routes")(app);
+require("./routes/accounts.routes")(app);
+require("./routes/listType.routes")(app);
+require("./routes/listItem.routes")(app);
+require("./routes/itemAttribute.routes")(app);
+require("./routes/listAttribute.routes")(app);
 
 app.listen(PORT, '0.0.0.0', function() {
   console.log(`Server is running on port ${PORT}.`);
