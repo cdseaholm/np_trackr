@@ -4,12 +4,17 @@ const Op = db.Sequelize.Op;
 
 
 exports.create = async (req, res) => {
-    console.log('Request body:', req.body);
-  
-      const list_Item = {
-        name: req.body[0].name,
-        listid: req.body[0].listid,
-      };
+    if (!req.body.name || !req.body.listid) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+      return;
+    }
+
+    const list_Item = {
+      name: req.body.name,
+      listid: req.body.listid,
+    };
   
     List_Item.create(list_Item)
       .then(data => {

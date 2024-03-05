@@ -1,41 +1,20 @@
 import React from 'react';
 import { Alert } from 'react-native';
-import { EXPO_PUBLIC_RANKER_ITEM_IP_URL } from '@env'
-import { EXPO_PUBLIC_TRACKER_ITEM_IP_URL } from '@env'
-import { EXPO_PUBLIC_CUSTOM_ITEM_IP_URL } from '@env'
-import fetch from 'node-fetch';
+import { EXPO_PUBLIC_LIST_IP_URL } from '@env'
 import { HandleCloseAllBottomSheets } from '../../basicHandles/HandleClose';
 import { FetchCreate } from '../../../../services/fetchServices/FetchCreate';
 
-export async function HandleAddItem(handleParent, inputItemContent, navigation) {
+export async function HandleAddItem(itemName, itemListID, navigation) {
 
-  var itemContent = [];
-  var itemCombo = [];
-  var ipHandle = '';
+  const ipHandle = `${EXPO_PUBLIC_LIST_IP_URL}/item`;
 
-    itemContent = [
-      {
-        name: inputItemContent.name,
-        listid: inputItemContent.category,
-      }
-    ]
-    itemCombo = [{
-      name: inputItemContent.name,
-      category: inputItemContent.category,
-      rank: inputItemContent.rank,
-    }]
-    ipHandle = EXPO_PUBLIC_RANKER_ITEM_IP_URL;
-  
-
-  if (!itemCombo) {
+  if (!itemName || !itemListID) {
     Alert.alert('Please fill in required fields');
   } else {
     try {
-      const response = await FetchCreate(itemContent, ipHandle);
-      console.log('Response:', response);
+      const response = await FetchCreate({name: itemName, listid: itemListID}, ipHandle);
       if (response.ok) {
         const data = await response.json();
-        console.log('Data:', data);
         HandleCloseAllBottomSheets(navigation);
       } else {
         const data = await response.json();

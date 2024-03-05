@@ -9,7 +9,7 @@ export async function HandleCreateList(name, navigation) {
     Alert.alert('Please name this list');
   } else {
     try {
-      const response = await FetchCreate({ name: name }, ipToPass); // Removed the array
+      const response = await FetchCreate({ name: name }, ipToPass);
       console.log('Response:', response);
       if (response.ok) {
         const data = await response.json();

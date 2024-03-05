@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard
 import DropDownList from '../DropDownList';
 import { Divider } from 'react-native-paper';
 
-export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems, setDropDownSelectedValue, dropSelectedDownValue, attributeAddition, setObject}) {
+export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems, setDropDownSelectedValue, dropSelectedDownValue, attributeAddition, setObject, dropDownPlaceholder}) {
   var dimensionsMultiplier = 4.5;
   var dropDownValue = 0;
   var attributionValue = 0;
@@ -63,15 +63,28 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
     );
   });
   
+  if (attributeAddition != null) {
   var attributeAddition = attributeAddition.map((item, index) => {
-    return (
-      <TouchableOpacity key={index} style={{ backgroundColor: 'transparent' }}
-          onPress={item.onPress}>
-        <Text style={{fontSize: 18, color: "black"}}>{item.text}</Text>
-      </TouchableOpacity>
-    );
-  });
-
+  return (
+    <TouchableOpacity 
+      key={index} 
+      style={{ 
+        backgroundColor: 'transparent', 
+        borderWidth: 1, 
+        borderColor: 'black', 
+        borderRadius: 20, 
+        padding: 5,
+        alignItems: 'center', 
+        justifyContent: 'center'
+      }}
+      onPress={item.onPress}>
+      <Text style={{fontSize: 15, color: "black", paddingHorizontal: 5}}>{item.text}</Text>
+    </TouchableOpacity>
+  );
+});
+  } else {
+    var attributeAddition = null;
+  }
   return (
       <KeyboardAvoidingView behavior='height' style={{flex: 1, justifyContent: 'flex-end'}}>
         <Animated.View style={{backgroundColor: 'rgb(237, 235, 228)', borderTopStartRadius: 20, borderTopEndRadius: 20, padding: 15, height: dimensionsHeight, top: modalTop}}>
@@ -81,13 +94,17 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
           <Divider style={{backgroundColor: 'black', height: 1, width: '80%', alignSelf: 'center', marginVertical: 15}} />
           {dropDownItems &&
           <View style={{marginVertical: 15}}>
-            <DropDownList optionsList={dropDownItems} setSelectedValue={setDropDownSelectedValue} selectedValue={dropSelectedDownValue} setObject={setObject} />
+            <DropDownList optionsList={dropDownItems} setSelectedValue={setDropDownSelectedValue} selectedValue={dropSelectedDownValue} setObject={setObject} dropDownPlaceholder={dropDownPlaceholder} />
           </View>
           }
           {textItems}
+          {attributeAddition != null &&
           <View style={{marginVertical: 15, alignItems: 'center'}}>
+            <View style={{flexDirection: 'row'}}>
           {attributeAddition}
+            </View>
           </View>
+}
           <Divider style={{backgroundColor: 'black', height: 1, width: '80%', alignSelf: 'center', marginVertical: 15}} />
           <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 50, marginVertical: 10}}>
             {buttonItems}

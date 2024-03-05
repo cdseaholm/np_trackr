@@ -18,7 +18,7 @@ export function CreateNewList() {
   ];
 
   const attributionItems = [
-    {text: 'Add Attribute to List', onPress: () => CreateItemAttribute()}
+    {text: '+ Add Attribute to List', onPress: () => navigation.navigate('CreateItemAttribute', {parentScreen: 'CreateNewList'})}
   ]
 
   return (

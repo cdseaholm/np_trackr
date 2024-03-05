@@ -4,13 +4,24 @@ const Op = db.Sequelize.Op;
 
 
 exports.create = async (req, res) => {
-    console.log('Request body:', req.body);
+  console.log('Request body:', req.body);
+  if (!req.body.name || !req.body.value || !req.body.type || !req.body.placeholder) {
+    console.log('name:', req.body.name);
+    console.log('value:', req.body.value);
+    console.log('type:', req.body.type);
+    console.log('placeholder:', req.body.placeholder);
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
   
       const item_Attribute = {
-        name: req.body[0].name,
-        itemid: req.body[0].itemid,
-        value: req.body[0].value,
-        type: req.body[0].type,
+        name: req.body.name,
+        itemid: req.body.parentid,
+        value: req.body.value,
+        type: req.body.type,
+        placeholder: req.body.placeholder
       };
   
     Item_Attribute.create(item_Attribute)
