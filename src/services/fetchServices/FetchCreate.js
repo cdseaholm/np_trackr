@@ -1,7 +1,9 @@
 import fetch from 'node-fetch';
 
 export async function FetchCreate(itemContent, ipHandle) {
-  const response = await fetch(`${ipHandle}/create`, {
+  console.log('FetchCreate:', itemContent, ipHandle);
+  var ipHandle = `${ipHandle}/create`;
+  const response = await fetch(ipHandle, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

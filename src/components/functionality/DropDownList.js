@@ -4,21 +4,24 @@ import RNPickerSelect from 'react-native-picker-select';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const DropDownList = ({optionsList, setSelectedValue, selectedValue, setObject}) => {
+const DropDownList = ({optionsList, setSelectedValue, selectedValue, setObject, dropDownPlaceholder}) => {
     const [selectedObject, setSelectedObject] = useState(null);
 
-    const placeholder = {
+    var placeholder = {
         label: 'Select an item...',
         value: null
-    };
+    } 
+
+    if (dropDownPlaceholder) {
+        placeholder = {
+            label: dropDownPlaceholder,
+            value: null};
+    }
 
     useEffect(() => {
-        console.log('onValueSet:', selectedValue);
-        console.log('onObjectSet:', selectedObject);
     }, [selectedValue, selectedObject], setObject);
 
-    const options = optionsList.map((option) => {
-        console.log('options:', option);
+    var options = optionsList.map((option) => {
         return {label: option.label, value: `${option.index}_${option.label}`, category: option.category};
     });
 
@@ -34,13 +37,10 @@ const DropDownList = ({optionsList, setSelectedValue, selectedValue, setObject})
                         const objectIndex = parseInt(parts[0], 10);
                         setSelectedObject(optionsList[objectIndex]);
                         setSelectedValue(value);
-                        console.log('onValueChange:', value);
                     }
                 }}
                 onDonePress={() => {
-                    setObject(selectedObject);
-                    console.log('onDonePress:', selectedObject);
-
+                        setObject(selectedObject);
                 }}
                 value={selectedValue}
             />

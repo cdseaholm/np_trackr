@@ -9,17 +9,21 @@ import { CreateItemAttribute } from './CreateItemAttribute';
 export function CreateItemForList({route, navigation}) {
   const ipToPass = `${EXPO_PUBLIC_LIST_IP_URL}/attribute/get/all`;
   const listData = route.params.list;
-  const list = {
-    name: listData.name,
-    id: listData.id
+  var list = {
+    id: 0,
+    name: ''
   }
+  if (listData) {
+    list = {
+      id: listData.id,
+      name: listData.name
+    }
+  } 
   const [itemName, setItemName] = useState('');
-  const [listID, setListID] = useState('');
   const [attributes, setAttributes] = useState([]);
   const modalButtonItems = [
     {text: 'Cancel', onPress: () => HandleClosePress(navigation)},
-    {text: 'Create', onPress: () => {
-      HandleAddItem('AddItemtoList', {name: itemName, listID: listID}, navigation)}},
+    {text: 'Create', onPress: () => HandleAddItem(itemName, list.id, navigation)},
     ]
   var modalTextInputItems = [
     {placeholder: 'Name', onChangeText: setItemName, value: itemName, keyboardType: 'default'}
@@ -37,7 +41,8 @@ export function CreateItemForList({route, navigation}) {
         });
         setAttributes(listAttributesToPass);
       }
-      console.log('useEffectLog:', listAttributesToPass);
+      console.log('useEffectLog:', listAttributesToPass.length);
+      console.log('listID:', list.id);
     };
     fetchItems();
   }, []);
@@ -47,13 +52,13 @@ export function CreateItemForList({route, navigation}) {
   }
 
   const attributionItems = [
-    {text: 'Add Attribute to only this item', onPress: () => CreateItemAttribute()}
+    {text: '+ Add Attribute to this item only', onPress: () => CreateItemAttribute()}
   ]
 
   return (
       <ModalSheetTemplate 
         modalTopStartValue={0}
-        modalTitle={'Add Item to List' + list.name}
+        modalTitle={'Add Item to List ' + list.name}
         dropDownItems={null}
         modalTextInputItems={modalTextInputItems} 
         modalButtonItems={modalButtonItems}

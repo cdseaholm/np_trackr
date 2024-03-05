@@ -25,7 +25,7 @@ db.sequelize = sequelize;
 
 db.account = require("./accounts.model.js")(sequelize, Sequelize);
 db.listType = require("./listType.model.js")(sequelize, Sequelize);
-db.trackerItem = require("./listItem.model.js")(sequelize, Sequelize);
+db.listItem = require("./listItem.model.js")(sequelize, Sequelize);
 db.itemAttribute = require("./itemAttribute.model.js")(sequelize, Sequelize);
 db.listAttribute = require("./listAttribute.model.js")(sequelize, Sequelize);
 

@@ -1,47 +1,49 @@
 import React, { useState} from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { ModalSheetTemplate } from '../ModalSheetTemplate';
 import { HandleClosePress } from '../../basicHandles/HandleClose';
-import { HandleAddItem } from '../modalSheetHandles/HandleAddItem';
-import { EXPO_PUBLIC_LIST_TYPE_IP_URL } from '@env';
-import { FetchGetAllItems } from '../../../../services/fetchServices/FetchGetItems';
+import { HandleAddAttribute } from '../modalSheetHandles/HandleAddAttribute';
 
-export function CreateItemAttribute() {
-  const ipToPass = `${EXPO_PUBLIC_LIST_TYPE_IP_URL}/get/all`; 
-  const navigation = useNavigation();
-  const [itemName, setItemName] = useState('');
-  const [listItemNotes, setlistItemNotes] = useState('');
-  const [listID, setListID] = useState('');
-  const [rankValue, setRankValue] = useState('');
+export function CreateItemAttribute({parentScreen, navigation}) {
+
+  var parentType = '';
+
+  if (parentScreen === 'CreateNewList') {
+    parentType = 'List'
+  } else {
+    parentType = 'Item'
+  }
+  const [attributeName, setAttributeName] = useState('');
+  const [value, setValue] = useState(null);
+  const [attributeType, setAttributeType] = useState(null);
+  const [dropDownSelectedValue, setDropDownSelectedValue] = useState(null);
+
   const modalButtonItems = [
     {text: 'Cancel', onPress: () => HandleClosePress(navigation)},
-    {text: 'Create', onPress: () => HandleAddItem('AddItemtoList', {name: itemName, listID: listID, notes: listItemNotes, rank: rankValue}, navigation)}]
-  var modalTextInputItems = [
-    {placeholder: 'Name', onChangeText: setItemName, value: customListName, keyboardType: 'default'},
+    {text: 'Create', onPress: () => HandleAddAttribute(attributeName, 0, parentType, attributeType.label, attributeName, value, navigation)}]
+  const modalTextInputItems = [
+    {placeholder: 'Name', onChangeText: setAttributeName, value: attributeName, keyboardType: 'default'},
+    {placeholder: 'Value', onChangeText: setValue, value: value, keyboardType: 'default'}
   ];
-
-  useEffect(() => {
-    const fetchItems = async () => {
-        const itemsFetch = await FetchGetAllItems(ipToPass);
-        const itemsToPass = itemsFetch.map((item, index) => {
-            return {label: item.name, index: index, listName: item.category};
-        });
-        setItems(itemsToPass);
-        console.log('useEffectLog:', itemsFetch);
-    };
-    fetchItems();
-  }, []);
+  const dropDownItems = [
+    {label: 'Text', value: 'text', index: 0},
+    {label: 'Number', value: 'number', index: 1},
+    {label: 'Date', value: 'date', index: 2},
+    {label: 'True/False', value: 'boolean', index: 3},
+    {label: 'List', value: 'list', index: 4}
+  ];
 
   return (
       <ModalSheetTemplate 
         modalTopStartValue={0}
-        modalTitle='Create List Item'
-        dropDownItems={null} 
+        modalTitle='Create an Attribute for this List'
+        dropDownItems={dropDownItems} 
         modalTextInputItems={modalTextInputItems} 
         modalButtonItems={modalButtonItems}
-        setDropDownSelectedValue={setListID}
-        dropSelectedDownValue={listID}
+        setDropDownSelectedValue={setDropDownSelectedValue}
+        dropSelectedDownValue={dropDownSelectedValue}
         attributeAddition={null}
+        setObject={setAttributeType}
+        dropDownPlaceholder='Select an attribute type'
       />
   );
 };

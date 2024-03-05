@@ -7,7 +7,7 @@ module.exports = app => {
     router.post("/create", listItem.create);
 
     //delete all
-    router.delete("/delete-all", listItem.deleteAll);
+    router.delete("/delete/all", listItem.deleteAll);
     
     //delete by name
     router.delete("/delete/:name", listItem.delete);
