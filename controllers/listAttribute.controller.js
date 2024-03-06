@@ -4,15 +4,7 @@ const Op = db.Sequelize.Op;
 
 
 exports.create = async (req, res) => {
-  console.log('name:', req.body.name);
-  console.log('value:', req.body.value);
-  console.log('type:', req.body.type);
-  console.log('placeholder:', req.body.placeholder);
     if (!req.body.name || !req.body.value || !req.body.type || !req.body.placeholder) {
-      console.log('name:', req.body.name);
-      console.log('value:', req.body.value);
-      console.log('type:', req.body.type);
-      console.log('placeholder:', req.body.placeholder);
       res.status(400).send({
         message: "Content can not be empty!"
       });
