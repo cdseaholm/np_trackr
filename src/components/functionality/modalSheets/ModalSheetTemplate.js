@@ -2,18 +2,29 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard, Platform, Animated, Dimensions } from 'react-native';
 import DropDownList from '../DropDownList';
 import { Divider } from 'react-native-paper';
+import Attribute from '../../uiComponents/Attribute';
 
-export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems, setDropDownSelectedValue, dropSelectedDownValue, attributeAddition, setObject, dropDownPlaceholder}) {
+export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems, setDropDownSelectedValue, dropSelectedDownValue, attributeAddition, setObject, dropDownPlaceholder, listName, setListName, totalItems, handleNameChange}) {
   var dimensionsMultiplier = 4.5;
   var dropDownValue = 0;
   var attributionValue = 0;
+  var nameNeededValue = 0;
   if (dropDownItems != null) {
     dropDownValue = 1;
   }
   if (attributeAddition != null) {
     attributionValue = 1;
   }
-  totalItems=modalTextInputItems.length + dropDownValue + attributionValue;
+  let nameNeeded = true;
+  if (modalTitle === 'Create an Attribute for this Item' || modalTitle === 'Create an Attribute for this List') {
+    nameNeeded = false;
+    nameNeededValue = 0;
+  } else {
+    nameNeeded = true;
+    nameNeededValue = 1;
+  }
+
+  totalItems=modalTextInputItems.length + dropDownValue + attributionValue + nameNeededValue;
 
   var dimensionsHeight = (Dimensions.get('window').height / dimensionsMultiplier) + (totalItems * (50 + 30));
   var modalTop = useRef(new Animated.Value(modalTopStartValue)).current;
@@ -48,10 +59,17 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
   
   var textItems = modalTextInputItems.map((item, index) => {
     return (
-          <View key={index} style={{marginVertical: 15}}>
-            <TextInput style={{height: 50, borderRadius: 20, fontSize: 15, color: "black", paddingLeft: 20, width: '100%', backgroundColor: 'white'}} placeholder={item.placeholder} keyboardType={item.keyboardType} onChangeText={item.onChangeText} value={item.value} enterKeyHint='enter' />
-          </View>
-        );
+      <View key={index} style={{marginVertical: 15}}>
+      <Attribute
+        styles={{height: 50, borderRadius: 20, fontSize: 15, color: "black", paddingLeft: 20, width: '100%', backgroundColor: 'white'}}
+        key={index}
+        placeholder={item.placeholder}
+        keyboardType={item.keyboardType}
+        onNameChange={(newName) => handleNameChange(index, newName)}
+        value={item.value}
+      />
+    </View>
+    );
   });
 
   var buttonItems = modalButtonItems.map((item, index) => {
@@ -62,6 +80,8 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
       </TouchableOpacity>
     );
   });
+
+  
   
   if (attributeAddition != null) {
   var attributeAddition = attributeAddition.map((item, index) => {
@@ -82,6 +102,7 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
     </TouchableOpacity>
   );
 });
+
   } else {
     var attributeAddition = null;
   }
@@ -92,6 +113,11 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
             {modalTitle}
           </Text>
           <Divider style={{backgroundColor: 'black', height: 1, width: '80%', alignSelf: 'center', marginVertical: 15}} />
+          {nameNeeded &&
+          <View style={{marginVertical: 15}}>
+            <TextInput style={{height: 50, borderRadius: 20, fontSize: 15, color: "black", paddingLeft: 20, width: '100%', backgroundColor: 'white'}} placeholder={'Name'} keyboardType={'default'} onChangeText={setListName} value={listName} enterKeyHint='enter' />
+          </View>
+          }
           {dropDownItems &&
           <View style={{marginVertical: 15}}>
             <DropDownList optionsList={dropDownItems} setSelectedValue={setDropDownSelectedValue} selectedValue={dropSelectedDownValue} setObject={setObject} dropDownPlaceholder={dropDownPlaceholder} />

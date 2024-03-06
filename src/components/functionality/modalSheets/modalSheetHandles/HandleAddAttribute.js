@@ -1,12 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Alert } from 'react-native';
 import { EXPO_PUBLIC_LIST_IP_URL } from '@env'
-import { HandleClosePress } from '../../basicHandles/HandleClose';
 import { FetchCreate } from '../../../../services/fetchServices/FetchCreate';
 
-export async function HandleAddAttribute(attributeName, parentid, parentType, attributeType, placeholder, value, navigation) {
+export async function HandleAddAttribute(attributeName, parentid, parentType, attributeType, placeholder, value, refreshPage, setShowCreateList, setShowAttribute) {
     
-    console.log('HandleAddAttribute:', attributeName, parentid, parentType, attributeType, placeholder, value);
   let parentIP = '/'
   if (parentType === 'Item') {
     parentIP = '/item/';
@@ -19,13 +17,23 @@ export async function HandleAddAttribute(attributeName, parentid, parentType, at
     Alert.alert('Please fill in required fields');
   } else {
     try {
-      console.log('name:', attributeName);
-      console.log('value:', value);
-      console.log('type:', attributeType);
-      console.log('placeholder:', placeholder);
       const response = await FetchCreate({name: attributeName, parentid: parentid, type: attributeType, placeholder: placeholder, value: value}, ipHandle);
       if (response.ok) {
-        HandleClosePress(navigation);
+        const data = await response.json();
+        var keyBoard = 'default';
+        if (attributeType === 'number') {
+          keyBoard = 'numeric';
+        } else if (attributeType === 'date') {
+          keyBoard = 'numeric';
+        } else {
+          keyBoard = 'default';
+        }
+        console.log('data:', data);
+        const itemToAdd = {placeholder: data.placeholder, name: data.name, value: data.value, type: keyBoard};
+        console.log('itemToAdd:', itemToAdd);
+        refreshPage(itemToAdd);
+        setShowAttribute(false);
+        setShowCreateList(true);
       } else {
         const data = await response.json();
         Alert.alert(data.message);

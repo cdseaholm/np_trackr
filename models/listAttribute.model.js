@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
       value: {
         type: Sequelize.STRING
       },
-      placeHolder: {
+      placeholder: {
         type: Sequelize.STRING
       }
     });
