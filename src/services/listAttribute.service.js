@@ -26,9 +26,9 @@ class ListAttributeDataService {
       return http.get(`/api/list/attribute/get/${name}`); 
     }
   
-    //update by name
-    update(name, data) {
-      return http.put(`/api/list/attribute/update/${name}`, data);
+    //update by id
+    update(id, data) {
+      return http.put(`/api/list/attribute/update/${id}`, data);
     }
   }
 

@@ -9,9 +9,6 @@ module.exports = (sequelize, Sequelize) => {
       type: {
         type: Sequelize.STRING
       },
-      value: {
-        type: Sequelize.STRING
-      },
       placeholder: {
         type: Sequelize.STRING
       }

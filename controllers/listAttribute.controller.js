@@ -4,7 +4,7 @@ const Op = db.Sequelize.Op;
 
 
 exports.create = async (req, res) => {
-    if (!req.body.name || !req.body.value || !req.body.type || !req.body.placeholder) {
+    if (!req.body.name || !req.body.type || !req.body.placeholder) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -14,7 +14,6 @@ exports.create = async (req, res) => {
       const list_Attribute = {
         name: req.body.name,
         listid: req.body.parentid,
-        value: req.body.value,
         type: req.body.type,
         placeholder: req.body.placeholder
       };
@@ -104,13 +103,13 @@ exports.create = async (req, res) => {
         });
   };
 
-//update by name
+//update by id
 exports.update = (req, res) => {
-  const name = req.params.name;
-  const { itemid, value, type } = req.query;
+  const id = req.params.childID;
+  const { parentID } = req.query;
 
-  List_Attribute.update(req.body, {
-    where: { name, itemid, value, type}
+  List_Attribute.update({ listid: parentID }, {
+    where: { id: id }
   })
     .then(num => {
       if (num == 1) {
