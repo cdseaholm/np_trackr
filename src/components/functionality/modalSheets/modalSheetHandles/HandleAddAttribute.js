@@ -3,7 +3,8 @@ import { Alert } from 'react-native';
 import { EXPO_PUBLIC_LIST_IP_URL } from '@env'
 import { FetchCreate } from '../../../../services/fetchServices/FetchCreate';
 
-export async function HandleAddAttribute(attributeName, parentid, parentType, attributeType, placeholder, value, refreshPage, setShowCreateList, setShowAttribute) {
+export async function HandleAddAttribute(attributeName, parentid, parentType, attributeType, placeholder, refreshPage, setShowCreateList, setShowAttribute) {
+  
     
   let parentIP = '/'
   if (parentType === 'Item') {
@@ -11,13 +12,14 @@ export async function HandleAddAttribute(attributeName, parentid, parentType, at
   } else {
     parentIP = '/';
   }
+
   const ipHandle = `${EXPO_PUBLIC_LIST_IP_URL}${parentIP}attribute`;
 
-  if (!attributeName || !attributeType || !value) {
+  if (!attributeName || !attributeType) {
     Alert.alert('Please fill in required fields');
   } else {
     try {
-      const response = await FetchCreate({name: attributeName, parentid: parentid, type: attributeType, placeholder: placeholder, value: value}, ipHandle);
+      const response = await FetchCreate({name: attributeName, parentid: parentid, type: attributeType, placeholder: placeholder}, ipHandle);
       if (response.ok) {
         const data = await response.json();
         var keyBoard = 'default';
@@ -28,8 +30,7 @@ export async function HandleAddAttribute(attributeName, parentid, parentType, at
         } else {
           keyBoard = 'default';
         }
-        console.log('data:', data);
-        const itemToAdd = {placeholder: data.placeholder, name: data.name, value: data.value, type: keyBoard};
+        const itemToAdd = {id: data.id, placeholder: data.placeholder, name: data.name, type: keyBoard};
         console.log('itemToAdd:', itemToAdd);
         refreshPage(itemToAdd);
         setShowAttribute(false);

@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard, Platform, Animated, Dimensions } from 'react-native';
 import DropDownList from '../DropDownList';
 import { Divider } from 'react-native-paper';
-import Attribute from '../../uiComponents/Attribute';
+import { NameChangeContext } from './modalSheetHandles/CreateContext';
 
-export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems, setDropDownSelectedValue, dropSelectedDownValue, attributeAddition, setObject, dropDownPlaceholder, listName, setListName, totalItems, handleNameChange}) {
+export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems, setDropDownSelectedValue, dropSelectedDownValue, attributeAddition, setObject, dropDownPlaceholder, listName, setListName, totalItems}) {
+  const handleNameChange = useContext(NameChangeContext);
   var dimensionsMultiplier = 4.5;
   var dropDownValue = 0;
   var attributionValue = 0;
@@ -60,14 +61,7 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
   var textItems = modalTextInputItems.map((item, index) => {
     return (
       <View key={index} style={{marginVertical: 15}}>
-      <Attribute
-        styles={{height: 50, borderRadius: 20, fontSize: 15, color: "black", paddingLeft: 20, width: '100%', backgroundColor: 'white'}}
-        key={index}
-        placeholder={item.placeholder}
-        keyboardType={item.keyboardType}
-        onNameChange={(newName) => handleNameChange(index, newName)}
-        value={item.value}
-      />
+        <TextInput style={{height: 50, borderRadius: 20, fontSize: 15, color: "black", paddingLeft: 20, width: '100%', backgroundColor: 'white'}} placeholder={item.placeholder} keyboardType={item.type} onChangeText={(newName) => handleNameChange(index, newName)} value={item.value} enterKeyHint='enter' />
     </View>
     );
   });

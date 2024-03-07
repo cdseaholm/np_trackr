@@ -1,13 +1,12 @@
-import React, { useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import { ModalSheetTemplate } from '../ModalSheetTemplate';
-import { HandleClosePress } from '../../basicHandles/HandleClose';
 import { HandleAddAttribute } from '../modalSheetHandles/HandleAddAttribute';
-import { RefreshContext } from '../modalSheetHandles/CreateContext';
+import { NameChangeContext, RefreshContext } from '../modalSheetHandles/CreateContext';
 
 export function CreateItemAttribute({parentScreen, navigation, setShowAttribute, setShowCreateList}) {
   const refreshPage = useContext(RefreshContext);
 
-  var parentType = 0;
+  var parentType = 'List';
   let title = '';
 
   if (parentScreen === 1) {
@@ -17,18 +16,23 @@ export function CreateItemAttribute({parentScreen, navigation, setShowAttribute,
     parentType = 'Item'
     title = 'Create an Attribute for this Item'
   }
-  if (refreshPage) {
-    console.log('refreshPage:', refreshPage);
-  }
   
   const [attributeName, setAttributeName] = useState('');
-  const [value, setValue] = useState(null);
   const [attributeType, setAttributeType] = useState(null);
   const [dropDownSelectedValue, setDropDownSelectedValue] = useState(null);
 
+  const updateName = (index, newName) => {
+    setAttributeName(newName);
+  }
+
+  const handleNameChange = (index, newName) => {
+    updateName(index, newName);
+  }
+
   const modalButtonItems = [
     {text: 'Cancel', onPress: () => {setShowAttribute(false), setShowCreateList(true)}},
-    {text: 'Create', onPress: () => HandleAddAttribute(attributeName, 0, parentType, attributeType.label, attributeName, value, refreshPage, setShowCreateList, setShowAttribute)}]
+    {text: 'Create', onPress: () => HandleAddAttribute(attributeName, 0, parentType, attributeType.label, attributeName, refreshPage, setShowCreateList, setShowAttribute)}
+  ]
   
   var keyBoard = 'default';
   if (attributeType === 'number') {
@@ -39,9 +43,9 @@ export function CreateItemAttribute({parentScreen, navigation, setShowAttribute,
     keyBoard = 'default';
   }
   const modalTextInputItems = [
-    {placeholder: 'Name', onChangeText: setAttributeName, value: attributeName, keyboardType: 'default'},
-    {placeholder: 'Value', onChangeText: setValue, value: value, keyboardType: keyBoard}
+    {name: '', placeholder: 'Name', onChangeText: setAttributeName, keyboardType: keyBoard}
   ];
+
   const dropDownItems = [
     {label: 'Text', value: 'text', index: 0},
     {label: 'Number', value: 'number', index: 1},
@@ -51,6 +55,7 @@ export function CreateItemAttribute({parentScreen, navigation, setShowAttribute,
   ];
 
   return (
+    <NameChangeContext.Provider value={handleNameChange}>
       <ModalSheetTemplate 
         modalTopStartValue={0}
         modalTitle={title}
@@ -63,6 +68,7 @@ export function CreateItemAttribute({parentScreen, navigation, setShowAttribute,
         setObject={setAttributeType}
         dropDownPlaceholder='Select an attribute type'
       />
+    </NameChangeContext.Provider>
   );
 };
 

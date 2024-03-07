@@ -2,9 +2,13 @@ import React from 'react';
 import { Alert } from 'react-native';
 import { EXPO_PUBLIC_LIST_IP_URL } from '@env'
 import { FetchCreate } from '../../../../services/fetchServices/FetchCreate';
+import { UpdateNewAttributeIDs } from '../../../../services/fetchServices/updates/UpdateNewAttributeIDs';
 
-export async function HandleCreateList(name, navigation) {
+export async function HandleCreateList(name, itemList, navigation) {
   var ipToPass = `${EXPO_PUBLIC_LIST_IP_URL}`;
+  const itemIDs = itemList.map((item) => {
+    return item.id;});
+    console.log('itemIDs:', itemIDs);
   if (!name) {
     Alert.alert('Please name this list');
   } else {
@@ -17,6 +21,7 @@ export async function HandleCreateList(name, navigation) {
           name: data.name,
           id: data.id
         }
+        await UpdateNewAttributeIDs(ipToPass, itemIDs, listData.id, 'list');
         navigation.navigate('CreateItemForList', { list: listData });
       } else {
         const data = await response.json();
