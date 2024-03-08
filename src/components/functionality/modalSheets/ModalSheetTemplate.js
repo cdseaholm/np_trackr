@@ -9,12 +9,15 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
   var dimensionsMultiplier = 4.5;
   var dropDownValue = 0;
   var attributionValue = 0;
-  var nameNeededValue = 0;
+  var nameNeededValue = 1;
   if (dropDownItems != null) {
     dropDownValue = 1;
   }
   if (attributeAddition != null) {
     attributionValue = 1;
+  }
+  if (parent === 'CreateItemAttribute') {
+    nameNeededValue = 0;
   }
 
   totalItems=modalTextInputItems.length + dropDownValue + attributionValue + nameNeededValue;
@@ -50,28 +53,14 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
     };
   }, []);
 
-  var textItems = modalTextInputItems.map((item, index) => {
-    const commonInputProps = {
-      style: {height: 50, borderRadius: 20, fontSize: 15, color: "black", paddingLeft: 20, width: '100%', backgroundColor: 'white'},
-      placeholder: item.placeholder,
-      keyboardType: item.type,
-      enterKeyHint: 'enter'
-    };
-  
-    if (parent === 'CreateItemForList') {
-      return (
-        <View key={index} style={{marginVertical: 15}}>
-          <TextInput {...commonInputProps} value={item.value} onChangeText={setListName} name={listName} />
+    var textItems = modalTextInputItems.map((item, index) => {
+        return (
+          <View key={index} style={{marginVertical: 15}}>
+            <TextInput style={{height: 50, borderRadius: 20, fontSize: 15, color: "black", paddingLeft: 20, width: '100%', backgroundColor: 'white'}} placeholder={item.placeholder} keyboardType={item.type} onChangeText={(newName) => handleNameChange(index, newName)} value={item.value} enterKeyHint='enter' />
         </View>
-      );
-    } else {
-      return (
-        <View key={index} style={{marginVertical: 15}}>
-          <TextInput {...commonInputProps} value={item.value} name={item.name} onChangeText={(newName) => handleNameChange(index, newName)} />
-        </View>
-      );
-    }
-  });
+        );
+      
+    });
   
   var buttonItems = modalButtonItems.map((item, index) => {
     return (
@@ -115,6 +104,18 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
             {modalTitle}
           </Text>
           <Divider style={{backgroundColor: 'black', height: 1, width: '80%', alignSelf: 'center', marginVertical: 15}} />
+          {nameNeededValue === 1 &&
+          <View style={{marginVertical: 15, backgroundColor: 'transparent'}}>
+            <TextInput 
+              style={{height: 50, borderRadius: 20, fontSize: 15, color: "black", paddingLeft: 20, width: '100%', backgroundColor: 'white'}}
+              placeholder='Name'
+              keyboardType='default'
+              enterKeyHint='enter'
+              name={listName}
+              onChangeText={setListName}
+            />
+          </View>
+          }
           {dropDownItems &&
           <View style={{marginVertical: 15}}>
             <DropDownList optionsList={dropDownItems} setSelectedValue={setDropDownSelectedValue} selectedValue={dropSelectedDownValue} setObject={setObject} dropDownPlaceholder={dropDownPlaceholder} />

@@ -4,8 +4,7 @@ import { EXPO_PUBLIC_LIST_IP_URL } from '@env'
 import { FetchCreate } from '../../../../services/fetchServices/FetchCreate';
 import { UpdateNewAttributeIDs } from '../../../../services/fetchServices/updates/UpdateNewAttributeIDs';
 
-export async function HandleCreateList(itemList, navigation) {
-  const name = itemList[0].name;
+export async function HandleCreateList(name, itemList, navigation) {
   var ipToPass = `${EXPO_PUBLIC_LIST_IP_URL}`;
   const itemIDs = itemList.map((item) => {
     return item.id;});

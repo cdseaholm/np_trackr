@@ -23,11 +23,9 @@ export function CreateItemForList({route, navigation}) {
 
   //state
   const [itemName, setItemName] = useState('');
-  const [attributes, setAttributes] = useState([
-    {id: 0, name: '', placeholder: 'Name', type: 'default', value: ''}
-  ]);
+  const [attributes, setAttributes] = useState([]);
+  const [itemSpecifics, setItemSpecifics] = useState([]);
   const [showAttribute, setShowAttribute] = useState(false);
-  const [itemSpecificAttributes, setItemSpecificAttributes] = useState([]);
   const [showCreateItem, setShowCreateItem] = useState(true);
   const url = `${ipToPass}${list.id}`;
   
@@ -36,13 +34,16 @@ export function CreateItemForList({route, navigation}) {
     const fetchItems = async () => {
       const itemsFetch = await FetchGetAllItems(url);
       console.log('itemsFetch:', itemsFetch);
+      var listAttributesToPass = [];
       if (itemsFetch && itemsFetch.length > 0) {
-        var listAttributesToPass = itemsFetch.map((item, index) => {
-          return {name: item.name, placeholder: item.placeholder, index: index, listid: item.listid, type: item.type, id: item.id, value};
+        const toPass = itemsFetch.map((item, index) => {
+          return {name: item.name, placeholder: item.placeholder, index: index, listid: item.listid, type: item.type, id: item.id};
         });
-        if (listAttributesToPass.length > 0) {
-        setAttributes(listAttributesToPass);
-        }
+        listAttributesToPass = toPass;
+      }
+      if (listAttributesToPass) {
+        console.log('listAttributesToPass:', listAttributesToPass);
+      setAttributes(previousList => [...previousList, listAttributesToPass]);
       }
     };
     fetchItems();
@@ -56,26 +57,15 @@ export function CreateItemForList({route, navigation}) {
     })
   }
 
-  const updateItemSpecificNameChange = (index, newName) => {
-    setItemSpecificAttributes(prevAttributesList => {
-      const updatedAttributeList = [...prevAttributesList];
-      updatedAttributeList[index] = {...updatedAttributeList[index], name: newName};
-      return updatedAttributeList;
-    })
-  }
-
   const handleNameChange = (index, newName) => {
     updateName(index, newName);
-  }
-
-  const handleItemSpecificNameChange = (index, newName) => {
-    updateItemSpecificNameChange(index, newName);
   }
 
   const refreshPage = (itemToAdd) => {
     if (itemToAdd && 'id' in itemToAdd) {
       const item = {id: itemToAdd.id, name: itemToAdd.name, placeholder: itemToAdd.placeholder, type: itemToAdd.type};
-      setItemSpecificAttributes(prevAttributesList => [...prevAttributesList, item])
+      setAttributes(prevAttributesList => [...prevAttributesList, item])
+      setItemSpecifics(prevItemSpecifics => [...prevItemSpecifics, item]);
     } else {
       console.error('Invalid item:', itemToAdd);
     }
@@ -84,7 +74,7 @@ export function CreateItemForList({route, navigation}) {
   //staticbuttons
   const modalButtonItems = [
     {text: 'Cancel', onPress: () => HandleClosePress(navigation)},
-    {text: 'Create', onPress: () => HandleAddItem(itemName, list.id, navigation)},
+    {text: 'Create', onPress: () => HandleAddItem(itemName, list.id, itemSpecifics, navigation)},
   ];
 
   const attributionItems = [
@@ -95,7 +85,6 @@ export function CreateItemForList({route, navigation}) {
 
   return (
     <RefreshItemContext.Provider value={refreshPage}>
-      <ItemSpecificNameChangeContext.Provider value={handleItemSpecificNameChange}>
       <NameChangeContext.Provider value={handleNameChange}>
         {showCreateItem && 
       <ModalSheetTemplate 
@@ -104,7 +93,7 @@ export function CreateItemForList({route, navigation}) {
         dropDownItems={null}
         itemName={itemName}
         setItemName={setItemName}
-        modalTextInputItems={[attributes, itemSpecificAttributes]} 
+        modalTextInputItems={attributes} 
         modalButtonItems={modalButtonItems}
         setDropDownSelectedValue={null}
         dropSelectedDownValue={null}
@@ -114,7 +103,6 @@ export function CreateItemForList({route, navigation}) {
         }
       {showAttribute && <CreateItemAttribute parentScreen={2} setShowAttribute={setShowAttribute} setShowCreateItem={setShowCreateItem} />}
       </NameChangeContext.Provider>
-      </ItemSpecificNameChangeContext.Provider>
     </RefreshItemContext.Provider>
   );
 };
