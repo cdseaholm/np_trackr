@@ -49,11 +49,11 @@ export function ModalSheetListTemplate({modalTopStartValue, modalTitle, dropDown
 
   var textItems = modalTextInputItems.map((item, index) => {
       return (
-        <View key={index} style={{marginVertical: 15}}>
+        <View key={index} style={{marginVertical: 15, backgroundColor: 'transparent'}}>
             <Text style={{height: 50, fontSize: 15, color: "black", paddingLeft: 20, width: '100%'}}>{item.name}</Text>
         </View>
       );
-    });
+  });
   
   var buttonItems = modalButtonItems.map((item, index) => {
     return (
