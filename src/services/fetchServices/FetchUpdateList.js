@@ -18,6 +18,5 @@ export async function UpdateList(ipHandle, updatedSheet) {
 } catch (error) {
     console.error('There has been a problem with your fetch operation:', error);
 }
-
     return 'ok';
 }

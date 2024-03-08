@@ -85,46 +85,38 @@ exports.create = async (req, res) => {
         });
   };
   
-  //get by name
-  exports.getByName = (req, res) => {
-    const name = req.params.name;
-    List_Attribute.findOne({ where: { name: name } })
+  //get by listid
+  exports.getBylistid = (req, res) => {
+    const listid = req.params.listid;
+    List_Attribute.findAll({ where: { listid: listid } })
         .then(data => {
             if (data) {
                 res.send({ data });
             } else {
-                res.send({ message: `Cannot find Tracker_Item with name=${name}.`});
+                res.send({ message: `Cannot find Tracker_Item with listid=${listid}.`});
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Error retrieving Tracker_Item with name=" + name
+                message: err.message || "Error retrieving Tracker_Item with listid=" + listid
             });
         });
   };
 
 //update by id
 exports.update = (req, res) => {
-  const id = req.params.childID;
-  const { parentID } = req.query;
+  const id = req.params.id;
+  const { listid } = req.query;
 
-  List_Attribute.update({ listid: parentID }, {
-    where: { id: id }
+  List_Attribute.update(
+    { listid: listid },
+    { where: { id: id }}
+  ).then(data => {
+    res.send(data);
   })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Custom Item was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Custom Item. Maybe Account was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating Custom item"
-      });
+  .catch(err => {
+    res.status(500).send({
+      message: "Error updating listAttribute"
     });
+  });
 };

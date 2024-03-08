@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard, Platform, Animated, Dimensions } from 'react-native';
-import DropDownList from '../DropDownList';
 import { Divider } from 'react-native-paper';
-import { NameChangeContext } from './modalSheetHandles/CreateContext';
 
-export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems, setDropDownSelectedValue, dropSelectedDownValue, attributeAddition, setObject, dropDownPlaceholder, listName, setListName, totalItems, parent}) {
-  const handleNameChange = useContext(NameChangeContext);
+export function ModalSheetListTemplate({modalTopStartValue, modalTitle, dropDownItems, modalTextInputItems, modalButtonItems, attributeAddition, listName, setListName, totalItems}) {
   var dimensionsMultiplier = 4.5;
   var dropDownValue = 0;
   var attributionValue = 0;
-  var nameNeededValue = 0;
+  var nameNeededValue = 1;
   if (dropDownItems != null) {
     dropDownValue = 1;
   }
@@ -51,27 +48,12 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
   }, []);
 
   var textItems = modalTextInputItems.map((item, index) => {
-    const commonInputProps = {
-      style: {height: 50, borderRadius: 20, fontSize: 15, color: "black", paddingLeft: 20, width: '100%', backgroundColor: 'white'},
-      placeholder: item.placeholder,
-      keyboardType: item.type,
-      enterKeyHint: 'enter'
-    };
-  
-    if (parent === 'CreateItemForList') {
       return (
         <View key={index} style={{marginVertical: 15}}>
-          <TextInput {...commonInputProps} value={item.value} onChangeText={setListName} name={listName} />
+            <Text style={{height: 50, fontSize: 15, color: "black", paddingLeft: 20, width: '100%'}}>{item.name}</Text>
         </View>
       );
-    } else {
-      return (
-        <View key={index} style={{marginVertical: 15}}>
-          <TextInput {...commonInputProps} value={item.value} name={item.name} onChangeText={(newName) => handleNameChange(index, newName)} />
-        </View>
-      );
-    }
-  });
+    });
   
   var buttonItems = modalButtonItems.map((item, index) => {
     return (
@@ -81,7 +63,6 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
       </TouchableOpacity>
     );
   });
-
   
   
   if (attributeAddition != null) {
@@ -115,10 +96,18 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
             {modalTitle}
           </Text>
           <Divider style={{backgroundColor: 'black', height: 1, width: '80%', alignSelf: 'center', marginVertical: 15}} />
-          {dropDownItems &&
-          <View style={{marginVertical: 15}}>
-            <DropDownList optionsList={dropDownItems} setSelectedValue={setDropDownSelectedValue} selectedValue={dropSelectedDownValue} setObject={setObject} dropDownPlaceholder={dropDownPlaceholder} />
+          <View style={{marginVertical: 15, backgroundColor: 'transparent'}}>
+            <TextInput 
+              style={{height: 50, borderRadius: 20, fontSize: 15, color: "black", paddingLeft: 20, width: '100%', backgroundColor: 'white'}}
+              placeholder='Name'
+              keyboardType='default'
+              enterKeyHint='enter'
+              name={listName}
+              onChangeText={setListName}
+            />
           </View>
+          {textItems > 0 &&
+          <Text style={{flexDirection: 'row', alignSelf: 'center'}}>Attributes For This List are:</Text>
           }
           {textItems}
           {attributeAddition != null &&
@@ -137,4 +126,4 @@ export function ModalSheetTemplate({modalTopStartValue, modalTitle, dropDownItem
   );
 };
 
-export default ModalSheetTemplate;
+export default ModalSheetListTemplate;

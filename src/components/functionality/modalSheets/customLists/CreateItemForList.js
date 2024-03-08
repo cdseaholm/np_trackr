@@ -4,10 +4,11 @@ import { HandleClosePress } from '../../basicHandles/HandleClose';
 import { HandleAddItem } from '../modalSheetHandles/HandleAddItem';
 import { EXPO_PUBLIC_LIST_IP_URL } from '@env';
 import { FetchGetAllItems } from '../../../../services/fetchServices/FetchGetItems';
-import { CreateItemAttribute } from './CreateItemAttribute';
+import { NameChangeContext, RefreshItemContext, ItemSpecificNameChangeContext } from '../modalSheetHandles/CreateContext';
 
 export function CreateItemForList({route, navigation}) {
-  const ipToPass = `${EXPO_PUBLIC_LIST_IP_URL}/attribute/get/all`;
+  //initialparams
+  const ipToPass = `${EXPO_PUBLIC_LIST_IP_URL}/attribute/get/`;
   const listData = route.params.list;
   var list = {
     id: 0,
@@ -19,53 +20,102 @@ export function CreateItemForList({route, navigation}) {
       name: listData.name
     }
   } 
+
+  //state
   const [itemName, setItemName] = useState('');
-  const [attributes, setAttributes] = useState([]);
-  const modalButtonItems = [
-    {text: 'Cancel', onPress: () => HandleClosePress(navigation)},
-    {text: 'Create', onPress: () => HandleAddItem(itemName, list.id, navigation)},
-    ]
-  var modalTextInputItems = [
-    {placeholder: 'Name', onChangeText: setItemName, value: itemName, keyboardType: 'default'}
-  ];
-  const params = new URLSearchParams(list.id).toString();
-  const url = `${ipToPass}?${params}`;
+  const [attributes, setAttributes] = useState([
+    {id: 0, name: '', placeholder: 'Name', type: 'default', value: ''}
+  ]);
+  const [showAttribute, setShowAttribute] = useState(false);
+  const [itemSpecificAttributes, setItemSpecificAttributes] = useState([]);
+  const [showCreateItem, setShowCreateItem] = useState(true);
+  const url = `${ipToPass}${list.id}`;
   
+  //effects/functions
   useEffect(() => {
     const fetchItems = async () => {
       const itemsFetch = await FetchGetAllItems(url);
-      let listAttributesToPass = [];
-      if (itemsFetch.length !== 0) {
-        listAttributesToPass = itemsFetch.map((item, index) => {
-          return {placeholder: item.placeholder, index: index, value: item.value, type: item.type, name: item.name};
+      console.log('itemsFetch:', itemsFetch);
+      if (itemsFetch && itemsFetch.length > 0) {
+        var listAttributesToPass = itemsFetch.map((item, index) => {
+          return {name: item.name, placeholder: item.placeholder, index: index, listid: item.listid, type: item.type, id: item.id, value};
         });
+        if (listAttributesToPass.length > 0) {
         setAttributes(listAttributesToPass);
+        }
       }
-      console.log('useEffectLog:', listAttributesToPass.length);
-      console.log('listID:', list.id);
     };
     fetchItems();
   }, []);
 
-  for (let i = 0; i < attributes.length; i++) {
-    modalTextInputItems.push({placeholder: attributes[i].placeholder, onChangeText: setItemName, value: attributes[i].value, keyboardType: attributes[i].type});
+  const updateName = (index, newName) => {
+    setAttributes(prevAttributesList => {
+      const updatedAttributeList = [...prevAttributesList];
+      updatedAttributeList[index] = {...updatedAttributeList[index], name: newName};
+      return updatedAttributeList;
+    })
   }
 
+  const updateItemSpecificNameChange = (index, newName) => {
+    setItemSpecificAttributes(prevAttributesList => {
+      const updatedAttributeList = [...prevAttributesList];
+      updatedAttributeList[index] = {...updatedAttributeList[index], name: newName};
+      return updatedAttributeList;
+    })
+  }
+
+  const handleNameChange = (index, newName) => {
+    updateName(index, newName);
+  }
+
+  const handleItemSpecificNameChange = (index, newName) => {
+    updateItemSpecificNameChange(index, newName);
+  }
+
+  const refreshPage = (itemToAdd) => {
+    if (itemToAdd && 'id' in itemToAdd) {
+      const item = {id: itemToAdd.id, name: itemToAdd.name, placeholder: itemToAdd.placeholder, type: itemToAdd.type};
+      setItemSpecificAttributes(prevAttributesList => [...prevAttributesList, item])
+    } else {
+      console.error('Invalid item:', itemToAdd);
+    }
+  }
+
+  //staticbuttons
+  const modalButtonItems = [
+    {text: 'Cancel', onPress: () => HandleClosePress(navigation)},
+    {text: 'Create', onPress: () => HandleAddItem(itemName, list.id, navigation)},
+  ];
+
   const attributionItems = [
-    {text: '+ Add Attribute to this item only', onPress: () => CreateItemAttribute()}
+    {text: '+ Add Attribute to this item only', onPress: () => {
+      setShowCreateItem(false);
+      setShowAttribute(true)}}
   ]
 
   return (
+    <RefreshItemContext.Provider value={refreshPage}>
+      <ItemSpecificNameChangeContext.Provider value={handleItemSpecificNameChange}>
+      <NameChangeContext.Provider value={handleNameChange}>
+        {showCreateItem && 
       <ModalSheetTemplate 
         modalTopStartValue={0}
-        modalTitle={'Add Item to List ' + list.name}
+        modalTitle={'Add Item to List: ' + list.name}
         dropDownItems={null}
-        modalTextInputItems={modalTextInputItems} 
+        itemName={itemName}
+        setItemName={setItemName}
+        modalTextInputItems={[attributes, itemSpecificAttributes]} 
         modalButtonItems={modalButtonItems}
         setDropDownSelectedValue={null}
         dropSelectedDownValue={null}
         attributeAddition={attributionItems}
+        parent={'CreateItemForList'}
       />
+        }
+      {showAttribute && <CreateItemAttribute parentScreen={2} setShowAttribute={setShowAttribute} setShowCreateItem={setShowCreateItem} />}
+      </NameChangeContext.Provider>
+      </ItemSpecificNameChangeContext.Provider>
+    </RefreshItemContext.Provider>
   );
 };
 

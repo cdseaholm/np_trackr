@@ -8,11 +8,12 @@ export async function UpdateNewAttributeIDs(ipHandle, updatedSheet, parentid, pa
     } else {
         parentIP = '/attribute';
     }
-    const baseIP = `${ipHandle}${parentIP}`;
     for (var i = 0; i < updatedSheet.length; i++) {
-        const params = new URLSearchParams(parentid).toString();
-        const url = `${baseIP}/update/${updatedSheet[i].id}?${params}`;
-        console.log('url:', url);
+        const toUpdate = {
+            listid: parentid
+        };
+        const params = new URLSearchParams(toUpdate).toString();
+        const url = `${ipHandle}${parentIP}/update/${updatedSheet[i]}?${params}`;
         try {
             const response = await fetch(url, {
                 method: 'PUT',
