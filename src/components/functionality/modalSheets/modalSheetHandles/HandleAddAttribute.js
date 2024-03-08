@@ -31,7 +31,6 @@ export async function HandleAddAttribute(attributeName, parentid, parentType, at
           keyBoard = 'default';
         }
         const itemToAdd = {id: data.id, placeholder: data.placeholder, name: data.name, type: keyBoard};
-        console.log('itemToAdd:', itemToAdd);
         refreshPage(itemToAdd);
         setShowAttribute(false);
         setShowCreateList(true);

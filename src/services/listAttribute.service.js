@@ -21,9 +21,9 @@ class ListAttributeDataService {
       return http.get("/api/list/attribute/get/all");
     }
   
-    //get by name
-    getByName(name) { 
-      return http.get(`/api/list/attribute/get/${name}`); 
+    //get by listid
+    getByName(listid) { 
+      return http.get(`/api/list/attribute/get/${listid}`); 
     }
   
     //update by id

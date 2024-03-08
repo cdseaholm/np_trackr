@@ -67,6 +67,7 @@ export function CreateItemAttribute({parentScreen, navigation, setShowAttribute,
         attributeAddition={null}
         setObject={setAttributeType}
         dropDownPlaceholder='Select an attribute type'
+        parent={'CreateItemAttribute'}
       />
     </NameChangeContext.Provider>
   );

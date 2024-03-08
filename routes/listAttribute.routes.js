@@ -15,8 +15,8 @@ module.exports = app => {
     //get all  
     router.get("/get/all", listAttribute.findAll);
 
-    //get by name
-    router.get("/get/:name", listAttribute.getByName);
+    //get by listid
+    router.get("/get/:listid", listAttribute.getBylistid);
 
     //update by id
     router.put("/update/:id", listAttribute.update);

@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 export async function FetchCreate(itemContent, ipHandle) {
-  console.log('FetchCreate:', itemContent, ipHandle);
+
   var ipHandle = `${ipHandle}/create`;
   const response = await fetch(ipHandle, {
     method: 'POST',
