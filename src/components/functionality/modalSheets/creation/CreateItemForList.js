@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Animated, Dimensions } from 'react-native';
 import { ModalSheetTemplate } from '../ModalSheetTemplate';
 import { HandleClosePress } from '../../basicHandles/HandleClose';
 import { HandleAddItem } from '../modalSheetHandles/HandleAddItem';
 import { EXPO_PUBLIC_LIST_IP_URL } from '@env';
 import { FetchGetAllItems } from '../../../../services/fetchServices/FetchGetItems';
-import { NameChangeContext, RefreshItemContext, ItemSpecificNameChangeContext } from '../modalSheetHandles/CreateContext';
+import { NameChangeContext, RefreshItemContext } from '../modalSheetHandles/CreateContext';
+import ListItemsForCreateItemForList from '../additions/listItems/ListItemsForCreateItemForList';
 
 export function CreateItemForList({route, navigation}) {
   //initialparams
@@ -34,21 +36,21 @@ export function CreateItemForList({route, navigation}) {
     const fetchItems = async () => {
       const itemsFetch = await FetchGetAllItems(url);
       console.log('itemsFetch:', itemsFetch);
-      var listAttributesToPass = [];
-      if (itemsFetch && itemsFetch.length > 0) {
-        const toPass = itemsFetch.map((item, index) => {
-          return {name: item.name, placeholder: item.placeholder, index: index, listid: item.listid, type: item.type, id: item.id};
-        });
-        listAttributesToPass = toPass;
-      }
-      if (listAttributesToPass) {
-        console.log('listAttributesToPass:', listAttributesToPass);
-      setAttributes(previousList => [...previousList, listAttributesToPass]);
+      if (itemsFetch.data && itemsFetch.data.length > 0) {
+        if (itemsFetch.data.length === attributes.length) {
+          return;
+        } else {
+          const toPass = itemsFetch.data.map((item, index) => {
+            return {name: item.name, placeholder: item.placeholder, index: index, listid: item.listid, type: item.type, id: item.id};
+          });
+          console.log('toPass:', toPass);
+          setAttributes(previousList => [...previousList, ...toPass]);
+        }
       }
     };
     fetchItems();
   }, []);
-
+  
   const updateName = (index, newName) => {
     setAttributes(prevAttributesList => {
       const updatedAttributeList = [...prevAttributesList];
@@ -83,6 +85,9 @@ export function CreateItemForList({route, navigation}) {
       setShowAttribute(true)}}
   ]
 
+  const dimensionsHeight = (Dimensions.get('window').height / 4.5) + ((attributes.length + 2) * (50 + 30));
+  const modalTop = useRef(new Animated.Value(0)).current;
+
   return (
     <RefreshItemContext.Provider value={refreshPage}>
       <NameChangeContext.Provider value={handleNameChange}>
@@ -90,16 +95,13 @@ export function CreateItemForList({route, navigation}) {
       <ModalSheetTemplate 
         modalTopStartValue={0}
         modalTitle={'Add Item to List: ' + list.name}
-        dropDownItems={null}
-        itemName={itemName}
-        setItemName={setItemName}
-        modalTextInputItems={attributes} 
-        modalButtonItems={modalButtonItems}
-        setDropDownSelectedValue={null}
-        dropSelectedDownValue={null}
+        modalTop={modalTop}
         attributeAddition={attributionItems}
-        parent={'CreateItemForList'}
-      />
+        modalButtonItems={modalButtonItems}
+        dimensionsHeight={dimensionsHeight}
+      >
+        <ListItemsForCreateItemForList items={attributes} listName={itemName} setListName={setItemName} />
+      </ModalSheetTemplate>
         }
       {showAttribute && <CreateItemAttribute parentScreen={2} setShowAttribute={setShowAttribute} setShowCreateItem={setShowCreateItem} />}
       </NameChangeContext.Provider>

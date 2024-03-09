@@ -1,7 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
+import { Animated, Dimensions } from 'react-native';
 import { ModalSheetTemplate } from '../ModalSheetTemplate';
 import { HandleAddAttribute } from '../modalSheetHandles/HandleAddAttribute';
 import { NameChangeContext, RefreshContext } from '../modalSheetHandles/CreateContext';
+import ListItemsForCreateAttribute from '../additions/listItems/ListItemsForCreateAttribute';
 
 export function CreateItemAttribute({parentScreen, navigation, setShowAttribute, setShowCreateList}) {
   const refreshPage = useContext(RefreshContext);
@@ -54,21 +56,21 @@ export function CreateItemAttribute({parentScreen, navigation, setShowAttribute,
     {label: 'List', value: 'list', index: 4}
   ];
 
+  const dimensionsHeight = (Dimensions.get('window').height / 4.5) + (180);
+  const modalTop = useRef(new Animated.Value(0)).current;
+
   return (
     <NameChangeContext.Provider value={handleNameChange}>
       <ModalSheetTemplate 
         modalTopStartValue={0}
-        modalTitle={title}
-        dropDownItems={dropDownItems} 
-        modalTextInputItems={modalTextInputItems} 
-        modalButtonItems={modalButtonItems}
-        setDropDownSelectedValue={setDropDownSelectedValue}
-        dropSelectedDownValue={dropDownSelectedValue}
+        modalTop={modalTop}
+        modalTitle='Create an Attribute for this List'
         attributeAddition={null}
-        setObject={setAttributeType}
-        dropDownPlaceholder='Select an attribute type'
-        parent={'CreateItemAttribute'}
-      />
+        modalButtonItems={modalButtonItems}
+        dimensionsHeight={dimensionsHeight}
+      >
+        <ListItemsForCreateAttribute items={modalTextInputItems} dropDownItems={dropDownItems} setDropDownSelectedValue={setDropDownSelectedValue} dropSelectedDownValue={dropDownSelectedValue} setObject={setAttributeType} dropDownPlaceholder='Type' />
+      </ModalSheetTemplate>
     </NameChangeContext.Provider>
   );
 };

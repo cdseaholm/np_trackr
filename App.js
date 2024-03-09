@@ -4,11 +4,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomProfileModalSheet } from './src/components/functionality/modalSheets/BottomProfileModalSheet';
 import Homepage from './src/screens/Homepage';
 import MainAppbar from './src/components/functionality/Main-appbar';
-import { CreateItemForList } from './src/components/functionality/modalSheets/customLists/CreateItemForList';
-import { CreateNewList } from './src/components/functionality/modalSheets/CreateNewList';
+import { CreateNewList } from './src/components/functionality/modalSheets/creation/CreateNewList';
+import { CreateItemForList } from './src/components/functionality/modalSheets/creation/CreateItemForList';
+import { CreateItemAttribute } from './src/components/functionality/modalSheets/creation/CreateItemAttribute';
 import { EditModalSheetSet } from './src/components/functionality/modalSheets/editing/EditModalSheetSet';
 import { EditSpecificSheet } from './src/components/functionality/modalSheets/editing/EditSpecificSheet';
-import { CreateItemAttribute } from './src/components/functionality/modalSheets/customLists/CreateItemAttribute';
 
 
 
