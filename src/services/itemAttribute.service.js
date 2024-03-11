@@ -21,14 +21,14 @@ class ItemAttributeDataService {
       return http.get("/api/list/item/attribute/get/all");
     }
   
-    //get by name
-    getByName(name) { 
-      return http.get(`/api/list/item/attribute/get/${name}`); 
+    //get by listid
+    getByName(listid) { 
+      return http.get(`/api/list/item/attribute/get/${listid}`); 
     }
   
-    //update by name
-    update(name, data) {
-      return http.put(`/api/list/item/attribute/update/${name}`, data);
+    //update by id
+    update(id, data) {
+      return http.put(`/api/list/item/attribute/update/${id}`, data);
     }
   }
 

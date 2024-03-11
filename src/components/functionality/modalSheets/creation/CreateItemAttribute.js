@@ -64,7 +64,7 @@ export function CreateItemAttribute({parentScreen, navigation, setShowAttribute,
       <ModalSheetTemplate 
         modalTopStartValue={0}
         modalTop={modalTop}
-        modalTitle='Create an Attribute for this List'
+        modalTitle={title}
         attributeAddition={null}
         modalButtonItems={modalButtonItems}
         dimensionsHeight={dimensionsHeight}

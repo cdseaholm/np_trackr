@@ -1,7 +1,7 @@
-export async function HandleClosePress (navigation) {
+export async function HandleClosePress(navigation) {
     navigation.pop();
 };
 
-export async function HandleCloseAllBottomSheets (navigation) {
+export async function HandleCloseAllBottomSheets(navigation) {
     navigation.popToTop();
 };

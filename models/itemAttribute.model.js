@@ -14,7 +14,10 @@ module.exports = (sequelize, Sequelize) => {
       },
       placeholder: {
         type: Sequelize.STRING
-      }
+      },
+      listid: {
+        type: Sequelize.INTEGER
+      },
     });
   
     return ItemAttribute;
