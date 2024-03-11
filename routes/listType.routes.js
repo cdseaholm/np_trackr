@@ -18,6 +18,6 @@ module.exports = app => {
     //get by name
     router.get("/get/:name", listType.getByName);
 
-
+    
     app.use('/api/list', router);
   };

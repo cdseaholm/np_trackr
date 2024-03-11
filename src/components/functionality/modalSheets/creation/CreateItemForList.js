@@ -27,7 +27,6 @@ export function CreateItemForList({route, navigation}) {
   //state
   const [itemName, setItemName] = useState('');
   const [attributes, setAttributes] = useState([]);
-  const [itemSpecifics, setItemSpecifics] = useState([]);
   const [showAttribute, setShowAttribute] = useState(false);
   const [showCreateItem, setShowCreateItem] = useState(true);
   const url = `${ipToPass}${list.id}`;
@@ -42,9 +41,8 @@ export function CreateItemForList({route, navigation}) {
           return;
         } else {
           const toPass = itemsFetch.data.map((item, index) => {
-            return {name: item.name, placeholder: item.placeholder, index: index, listid: item.listid, type: item.type, id: item.id, value: ''};
+            return {name: item.name, placeholder: item.placeholder, index: index, listid: item.listid, type: item.type, itemid: 0, value: item.value};
           });
-          console.log('toPass:', toPass);
           setAttributes(previousList => [...previousList, ...toPass]);
         }
       }
@@ -58,22 +56,16 @@ export function CreateItemForList({route, navigation}) {
       updatedAttributeList[index] = {...updatedAttributeList[index], value: newValue};
       return updatedAttributeList;
     });
-    setItemSpecifics(prevItemSpecifics => {
-      const updatedItemSpecifics = [...prevItemSpecifics];
-      updatedItemSpecifics[index] = {...updatedItemSpecifics[index], value: newValue};
-      return updatedItemSpecifics;
-    });
   }
 
   const handleValueChange = (index, newValue) => {
-    updateValue(index, newValue);
+    updateValue(index, newValue)
   }
 
   const refreshPage = (itemToAdd) => {
     if (itemToAdd && 'id' in itemToAdd) {
-      const item = {id: itemToAdd.id, name: itemToAdd.name, placeholder: itemToAdd.placeholder, type: itemToAdd.type, value: itemToAdd.value, listid: itemToAdd.listid};
+      const item = {id: itemToAdd.id, name: itemToAdd.name, placeholder: itemToAdd.placeholder, type: itemToAdd.type, value: itemToAdd.value, listid: itemToAdd.listid, itemid: 0};
       setAttributes(prevAttributesList => [...prevAttributesList, item])
-      setItemSpecifics(prevItemSpecifics => [...prevItemSpecifics, item]);
     } else {
       console.error('Invalid item:', itemToAdd);
     }
@@ -82,7 +74,7 @@ export function CreateItemForList({route, navigation}) {
   //staticbuttons
   const modalButtonItems = [
     {text: 'Cancel', onPress: () => HandleClosePress(navigation)},
-    {text: 'Create', onPress: () => HandleAddItem(itemName, list.id, itemSpecifics, attributes, navigation)},
+    {text: 'Create', onPress: () => HandleAddItem(itemName, list.id, attributes, navigation)},
   ];
 
   const attributionItems = [

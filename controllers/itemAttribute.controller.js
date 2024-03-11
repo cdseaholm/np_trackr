@@ -15,7 +15,6 @@ exports.create = async (req, res) => {
     const item_Attribute = {
       name: req.body.name,
       itemid: req.body.parentid,
-      listAttributeBool: req.body.listAttributeBool,
       type: req.body.type,
       placeholder: req.body.placeholder,
       value: req.body.value,
@@ -74,11 +73,9 @@ exports.create = async (req, res) => {
   
   //get all
   exports.findAll = (req, res) => {
-    const itemid = req.query.itemid;
-      var condition = itemid ? { itemid: { [Op.iLike]: `%${itemid}%` } } : null;
-    
-      Item_Attribute.findAll({ where: condition })
+      Item_Attribute.findAll()
         .then(data => {
+          console.log('data:', data);
           res.send(data);
         })
         .catch(err => {
@@ -89,32 +86,34 @@ exports.create = async (req, res) => {
         });
   };
   
-  //get by name
-  exports.getBylistid = (req, res) => {
-    const name = req.params.name;
-    Item_Attribute.findOne({ where: { name: name } })
+  //get by id
+  exports.getByitemid = (req, res) => {
+    const id = req.params.id;
+    Item_Attribute.findOne({ where: { id: id } })
         .then(data => {
             if (data) {
                 res.send({ data });
             } else {
-                res.send({ message: `Cannot find Tracker_Item with name=${name}.`});
+                res.send({ message: `Cannot find Tracker_Item with id=${id}.`});
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Error retrieving Tracker_Item with name=" + name
+                message: err.message || "Error retrieving Tracker_Item with id=" + id
             });
         });
   };
 
 //update by name
 exports.update = (req, res) => {
-  const name = req.params.name;
-  const { itemid, value, type } = req.query;
+  
+  const id = req.params.id;
+  const { itemid, value } = req.query;
 
-  Item_Attribute.update(req.body, {
-    where: { name, itemid, value, type}
-  })
+  Item_Attribute.update(
+    { itemid: itemid, value: value },
+    { where: { id: id }}
+  )
     .then(num => {
       if (num == 1) {
         res.send({
