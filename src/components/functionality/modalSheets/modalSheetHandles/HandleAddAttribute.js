@@ -19,9 +19,10 @@ export async function HandleAddAttribute(attributeName, parentid, parentType, at
     Alert.alert('Please fill in required fields');
   } else {
     try {
-      const response = await FetchCreate({name: attributeName, parentid: parentid, type: attributeType, placeholder: placeholder}, ipHandle);
+      const response = await FetchCreate({name: attributeName, parentid: parentid, type: attributeType, placeholder: placeholder, value: ''}, ipHandle);
       if (response.ok) {
         const data = await response.json();
+        console.log('data:', data);
         var keyBoard = 'default';
         if (attributeType === 'number') {
           keyBoard = 'numeric';
@@ -30,7 +31,7 @@ export async function HandleAddAttribute(attributeName, parentid, parentType, at
         } else {
           keyBoard = 'default';
         }
-        const itemToAdd = {id: data.id, placeholder: data.placeholder, name: data.name, type: keyBoard};
+        const itemToAdd = {id: data.id, placeholder: data.placeholder, name: data.name, type: keyBoard, value: ''};
         refreshPage(itemToAdd);
         setShowAttribute(false);
         setShowCreateList(true);

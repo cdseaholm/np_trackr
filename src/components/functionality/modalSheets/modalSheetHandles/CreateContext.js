@@ -7,3 +7,5 @@ export const RefreshItemContext = createContext();
 export const ItemSpecificNameChangeContext = createContext();
 
 export const NameChangeContext = createContext();
+
+export const HandleValueChangeContext = createContext();

@@ -15,8 +15,11 @@ module.exports = app => {
     //get all  
     router.get("/get/all", itemAttribute.findAll);
 
-    //get by name
-    router.get("/get/:name", itemAttribute.getByName);
+    //get by listid
+    router.get("/get/:itemid", itemAttribute.getBylistid);
+
+    //update by id
+    router.put("/update/:id", itemAttribute.update);
 
 
     app.use('/api/list/item/attribute', router);

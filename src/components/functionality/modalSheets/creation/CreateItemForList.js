@@ -5,8 +5,9 @@ import { HandleClosePress } from '../../basicHandles/HandleClose';
 import { HandleAddItem } from '../modalSheetHandles/HandleAddItem';
 import { EXPO_PUBLIC_LIST_IP_URL } from '@env';
 import { FetchGetAllItems } from '../../../../services/fetchServices/FetchGetItems';
-import { NameChangeContext, RefreshItemContext } from '../modalSheetHandles/CreateContext';
+import { HandleValueChangeContext, RefreshContext } from '../modalSheetHandles/CreateContext';
 import ListItemsForCreateItemForList from '../additions/listItems/ListItemsForCreateItemForList';
+import CreateItemAttribute from './CreateItemAttribute';
 
 export function CreateItemForList({route, navigation}) {
   //initialparams
@@ -41,7 +42,7 @@ export function CreateItemForList({route, navigation}) {
           return;
         } else {
           const toPass = itemsFetch.data.map((item, index) => {
-            return {name: item.name, placeholder: item.placeholder, index: index, listid: item.listid, type: item.type, id: item.id};
+            return {name: item.name, placeholder: item.placeholder, index: index, listid: item.listid, type: item.type, id: item.id, value: ''};
           });
           console.log('toPass:', toPass);
           setAttributes(previousList => [...previousList, ...toPass]);
@@ -51,21 +52,26 @@ export function CreateItemForList({route, navigation}) {
     fetchItems();
   }, []);
   
-  const updateName = (index, newName) => {
+  const updateValue = (index, newValue) => {
     setAttributes(prevAttributesList => {
       const updatedAttributeList = [...prevAttributesList];
-      updatedAttributeList[index] = {...updatedAttributeList[index], name: newName};
+      updatedAttributeList[index] = {...updatedAttributeList[index], value: newValue};
       return updatedAttributeList;
-    })
+    });
+    setItemSpecifics(prevItemSpecifics => {
+      const updatedItemSpecifics = [...prevItemSpecifics];
+      updatedItemSpecifics[index] = {...updatedItemSpecifics[index], value: newValue};
+      return updatedItemSpecifics;
+    });
   }
 
-  const handleNameChange = (index, newName) => {
-    updateName(index, newName);
+  const handleValueChange = (index, newValue) => {
+    updateValue(index, newValue);
   }
 
   const refreshPage = (itemToAdd) => {
     if (itemToAdd && 'id' in itemToAdd) {
-      const item = {id: itemToAdd.id, name: itemToAdd.name, placeholder: itemToAdd.placeholder, type: itemToAdd.type};
+      const item = {id: itemToAdd.id, name: itemToAdd.name, placeholder: itemToAdd.placeholder, type: itemToAdd.type, value: itemToAdd.value, listid: itemToAdd.listid};
       setAttributes(prevAttributesList => [...prevAttributesList, item])
       setItemSpecifics(prevItemSpecifics => [...prevItemSpecifics, item]);
     } else {
@@ -76,7 +82,7 @@ export function CreateItemForList({route, navigation}) {
   //staticbuttons
   const modalButtonItems = [
     {text: 'Cancel', onPress: () => HandleClosePress(navigation)},
-    {text: 'Create', onPress: () => HandleAddItem(itemName, list.id, itemSpecifics, navigation)},
+    {text: 'Create', onPress: () => HandleAddItem(itemName, list.id, itemSpecifics, attributes, navigation)},
   ];
 
   const attributionItems = [
@@ -89,8 +95,8 @@ export function CreateItemForList({route, navigation}) {
   const modalTop = useRef(new Animated.Value(0)).current;
 
   return (
-    <RefreshItemContext.Provider value={refreshPage}>
-      <NameChangeContext.Provider value={handleNameChange}>
+    <RefreshContext.Provider value={refreshPage}>
+      <HandleValueChangeContext.Provider value={handleValueChange}>
         {showCreateItem && 
       <ModalSheetTemplate 
         modalTopStartValue={0}
@@ -103,9 +109,9 @@ export function CreateItemForList({route, navigation}) {
         <ListItemsForCreateItemForList items={attributes} listName={itemName} setListName={setItemName} />
       </ModalSheetTemplate>
         }
-      {showAttribute && <CreateItemAttribute parentScreen={2} setShowAttribute={setShowAttribute} setShowCreateItem={setShowCreateItem} />}
-      </NameChangeContext.Provider>
-    </RefreshItemContext.Provider>
+      {showAttribute && <CreateItemAttribute parentScreen={'Item'} setShowAttribute={setShowAttribute} setShowCreateList={setShowCreateItem} />}
+      </HandleValueChangeContext.Provider>
+    </RefreshContext.Provider>
   );
 };
 
