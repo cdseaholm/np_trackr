@@ -5,7 +5,7 @@ import { HandleCloseAllBottomSheets } from '../../basicHandles/HandleClose';
 import { FetchCreate } from '../../../../services/fetchServices/FetchCreate';
 import { UpdateItemAttributes } from '../../../../services/fetchServices/updates/UpdateItemAttributes';
 
-export async function HandleAddItem(itemName, itemListID, itemSpecifics, attributes, navigation) {
+export async function HandleAddItem(itemName, itemListID, attributes, navigation) {
 
   const ipHandle = `${EXPO_PUBLIC_LIST_IP_URL}/item`;
 
@@ -19,42 +19,46 @@ export async function HandleAddItem(itemName, itemListID, itemSpecifics, attribu
           const item = {
             name: data.name,
             id: data.id,
-            value: data.value,
-            type: data.type,
-            placeholder: data.placeholder,
-            itemid: data.itemid
+            listid: data.listid
           };
-          if (itemSpecifics.length > 0) {
-          const itemSpecificsToPass = itemSpecifics.map((itemSpecific) => {
-            return {id: itemSpecific.id, name: itemSpecific.name, value: itemSpecific.value, type: itemSpecific.type, itemid: itemListID, placeholder: itemSpecific.placeholder, value: itemSpecific.value};
+          if (attributes.length > 0) {
+          const itemSpecificsToPass = attributes.map((attribute) => {
+            return {id: attribute.id, name: attribute.name, value: attribute.value, type: attribute.type, itemid: attribute.itemid, placeholder: attribute.placeholder, value: attribute.value, listid: attribute.listid};
           });
-          const ipHandle = `${EXPO_PUBLIC_LIST_IP_URL}/item/attribute`;
-          itemSpecificsToPass.forEach(async (thisItemSpecific) => {
-            const response = await UpdateItemAttributes(ipHandle, thisItemSpecific.id, item.id);
-            if (response.ok) {
-              const data = await response.json();
-              console.log('data:', data);
+          console.log('itemSpecificsToPass id:', item.id);
+          console.log("itemSpecificsToPass value", itemSpecificsToPass[0].value)
+          const ipHandleTwo = `${ipHandle}/attribute`;
+          for (var i = 0; i < itemSpecificsToPass.length; i++) {
+            const thisItemSpecific = {
+              id: itemSpecificsToPass[i].id,
+              name: itemSpecificsToPass[i].name,
+              value: itemSpecificsToPass[i].value,
+              type: itemSpecificsToPass[i].type,
+              itemid: itemSpecificsToPass[i].itemid,
+              placeholder: itemSpecificsToPass[i].placeholder,
+              listid: itemSpecificsToPass[i].listid
+            };
+            if (thisItemSpecific.listid === 0 || thisItemSpecific.listid === null) {
+              const response = await UpdateItemAttributes(ipHandleTwo, thisItemSpecific, item.id);
+              console.log('itemSpecificAttributesResponse:', response);
+              if (response.ok) {
+                console.log('data:', data);
+              } else {
+                const data = await response.json();
+                Alert.alert(data.message);
+              }
             } else {
-              const data = await response.json();
-              Alert.alert(data.message);
+              const response = await FetchCreate(thisItemSpecific, ipHandleTwo);
+              console.log('itemSpecificResponse:', response);
+              if (response.ok) {
+                const data = await response.json();
+                console.log('data:', data);
+              } else {
+                const data = await response.json();
+                Alert.alert(data.message);
+              }
             }
-          });
-        }
-        if (attributes.length > 0) {
-          const attributesToPass = attributes.map((attribute) => {
-            return {id: attribute.id, name: attribute.name, value: attribute.value, type: attribute.type, itemid: itemListID, placeholder: attribute.placeholder, value: attribute.value};
-          });
-          const ipHandleTwo = `${EXPO_PUBLIC_LIST_IP_URL}/attribute`;
-          attributesToPass.forEach(async (attribute) => {
-            const response = await FetchCreate(ipHandleTwo, attribute.id, item.id, 'Item');
-            if (response.ok) {
-              const data = await response.json();
-              console.log('data:', data);
-            } else {
-              const data = await response.json();
-              Alert.alert(data.message);
-            }
-          });
+          };
         }
         await HandleCloseAllBottomSheets(navigation);
       } else {

@@ -36,7 +36,7 @@ export function CreateNewList() {
 
   const refreshPage = (itemToAdd) => {
     if (itemToAdd && 'id' in itemToAdd) {
-      const item = {id: itemToAdd.id, name: itemToAdd.name, placeholder: itemToAdd.placeholder, type: itemToAdd.type};
+      const item = {id: itemToAdd.id, name: itemToAdd.name, placeholder: itemToAdd.placeholder, type: itemToAdd.type, value: itemToAdd.value, listid: itemToAdd.listid};
       setItemList(prevItemList => [...prevItemList, item])
       attributeCounter += 1;
       attributeCommentBool = true;

@@ -75,9 +75,9 @@ exports.create = async (req, res) => {
   
   //get all
   exports.findAll = (req, res) => {
-    
       List_Type.findAll()
         .then(data => {
+          console.log('Data:', data);
           res.send(data);
         })
         .catch(err => {
