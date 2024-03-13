@@ -10,7 +10,8 @@ export const GoalFABs = [
 
 export const HomeFABs = [
     { icon: 'plus', label: 'Create', onPress: (navigation) => navigation.navigate('CreateNewList') },
-    { icon: 'pencil', label: 'Add/Edit', onPress: (navigation) => navigation.navigate('EditModalSheetSet') },
+    { icon: 'pencil', label: 'Edit List', onPress: (navigation) => navigation.navigate('EditModalSheetSet', {type: 'List'}) },
+    { icon: 'pencil', label: 'Edit Item', onPress: (navigation) => navigation.navigate('EditModalSheetSet', {type: 'Item'}) },
     { icon: 'chart-bar', label: 'Add Item to List', onPress: (navigation) => navigation.navigate('CreateItemForList') },
 ];
 

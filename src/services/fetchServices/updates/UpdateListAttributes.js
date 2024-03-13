@@ -1,19 +1,13 @@
 import fetch from 'node-fetch';
 
-export async function UpdateNewAttributeIDs(ipHandle, updatedSheet, parentid, parent) {
+export async function UpdateListAttributes(ipHandle, updatedSheet, parentid) {
     
-    let parentIP = '/'
-    if (parent === 'Item') {
-        parentIP = '/item/attribute';
-    } else {
-        parentIP = '/attribute';
-    }
     for (var i = 0; i < updatedSheet.length; i++) {
         const toUpdate = {
             listid: parentid
         };
         const params = new URLSearchParams(toUpdate).toString();
-        const url = `${ipHandle}${parentIP}/update/${updatedSheet[i]}?${params}`;
+        const url = `${ipHandle}/attribute/update/${updatedSheet[i]}?${params}`;
         try {
             const response = await fetch(url, {
                 method: 'PUT',
